@@ -42,18 +42,12 @@ def register():
     session.clear()
 
     if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
-        email = request.form.get("email")
-        
-        password_hash = generate_password_hash(password)
-        print(password_hash)
 
         db = get_db()
         cursor = db.cursor()
             
         # Check if username or email already exists
-        cursor.execute("SELECT * FROM users WHERE username = ? OR email = ?", (username, email))
+        cursor.execute("SELECT * FROM users WHERE username = ? OR email = ?", (request.form.get("username"), request.form.get("email")))
         existing_user = cursor.fetchone()
         if existing_user:
             flash("Username or email already exists", "error")
@@ -61,7 +55,8 @@ def register():
         
         # Insert the new user into the database
         cursor.execute(
-            "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?);", (username, email, password_hash)
+            "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?);", 
+            (request.form.get("username"), request.form.get("email"), generate_password_hash(request.form.get("password")))
         )
 
         # Commit the insert
