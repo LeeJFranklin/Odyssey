@@ -1,0 +1,39 @@
+# Compiled Python files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Environment files
+venv/
+.env
+
+# IDE or Editor-specific files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Build and distribution files
+/build/
+/dist/
+*.egg-info/
+*.eggs
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Log files and databases
+*.log
+*.sqlite3
+
+# Coverage and testing files
+.coverage
+htmlcov/
+
+# Temporary files
+*.tmp
+*.bak
+
+# flask_session folder
+flask_session/
