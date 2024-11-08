@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="initial-scale=1, width=device-width">
         <link rel="stylesheet" href="static/styles.css">
+        <link rel="icon" href="/static/images/favicon.ico">
         <link rel="preload" href="static/images/landing-background.jpg" as="image">
         <title>Adventure Planner | {% block title %}{% endblock %}</title>
     </head>
@@ -14,11 +15,22 @@
                 <ul class="list-style-none">
                     <li>
                         <a href="/">
-                            <span>Adventure Planner</span>
+                            <span>Odyssey</span>
                         </a>
                     </li>
                 </ul>
             </div>
+            {% if session["user_id"] %}
+            <div class="nav-bar-right">
+                <ul class="list-style-none">
+                    <li>
+                        <a href="/logout">
+                            <span>Log Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            {% else %}
             <div class="nav-bar-right">
                 <ul class="list-style-none">
                     <li>
@@ -35,6 +47,7 @@
                     </li>
                 </ul>
             </div>
+            {% endif %}
         </nav>
     </header>
     <body>

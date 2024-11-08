@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-from flask import Flask, flash, redirect, render_template, request, session
+from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -67,7 +67,7 @@ def register():
 
         flash("Registration successful, please log in!", "success")
         # Redirect to a login page or home after registration
-        return redirect("/login")
+        return redirect(url_for("login"))
 
     return render_template("register.html")
 
@@ -79,7 +79,39 @@ def login():
     # Forget any user_id
     session.clear()
 
-    # TODO impliment log in system
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        db = get_db()
+        db.row_factory = sqlite3.Row  # Enable dictionary-like row access
+        cursor = db.cursor()
+            
+        # Check if user and password exists
+        cursor.execute(
+            "SELECT id, username, password_hash FROM users WHERE username = ?;", (username, )
+        )
+        user = cursor.fetchone()
+
+        # Check if the user exists
+        if not user:
+            flash("User does not exist", "error")
+            return redirect(url_for("login"))
+        
+        # Check if the password is correct
+        # Assuming password_hash column holds hashed password
+        elif not check_password_hash(user["password_hash"], password):
+            flash("Password is incorrect", "error")
+            return redirect(url_for("login"))
+
+        # Log in the user by storing their id in the session
+        session["user_id"] = user["id"]
+
+        # Close the connection once finished
+        db.close()
+
+        # Render index template after successful login
+        return render_template("index.html")  
 
     return render_template("login.html")
 
@@ -88,6 +120,5 @@ def login():
 @login_required
 def logout():
     session.clear()
-
     #Logs user out to the home page
     return redirect("/")

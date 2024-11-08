@@ -7,21 +7,23 @@
 {% block content %}
 
     <form action="/register" method="post">
-        <div class="login-reg-window">
+        <h2>Register</h2>
+        <p id="register-error" class="error"></p>
+
+        <div id="register-window" class="login-reg-window">
             <label for="username">Username</label>
-            <input id="register-username" name="username" class="input-field" autofocus autocomplete="off" placeholder="Username" type="text" required>
+            <input id="register-username" name="username" class="input-field" autofocus autocomplete="off" placeholder="Username" type="text">
 
             <label for="email">Email</label>
-            <input id="register-email" name="email" class="input-field" autofocus autocomplete="off" placeholder="example@email.com" type="email" required>
-            
-            <label for="password">Password</label>
-            <input id="register-password" name="password" class="input-field" autocomplete="off" placeholder="Password" type="password" required>
-            <p id="password-error"></p>
+            <input id="register-email" name="email" class="input-field" autocomplete="off" placeholder="example@email.com" type="email">
 
+            <label for="password">Password</label>
+            <input id="register-password" name="password" class="input-field" autocomplete="off" placeholder="Password" type="password">
+            
             <label for="confirm-password">Confirm Password</label>
-            <input id="confirm-register-password" name="confirm-password" class="input-field" autocomplete="off" placeholder="Confirm Password" type="password" required>
-            <p id="confirmation-error"></p>
-            <button type="submit">Register</button>
+            <input id="confirm-register-password" name="confirm-password" class="input-field" autocomplete="off" placeholder="Confirm Password" type="password">
+            
+            <button class="submit-btn" type="submit">Register</button>
         </div>
     </form>
 

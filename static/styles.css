@@ -15,7 +15,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 50px auto;
+    margin: 10px auto;
     padding: 20px;
     height: auto;
     width: 90vw;
@@ -26,6 +26,25 @@ h1 {
     font-size: 4em;
     font-family: monospace, sans-serif;
 }
+
+h2 {
+    color: #130B11;
+    font-size: 3em;
+    text-align: center;
+    font-family: monospace, sans-serif;
+    margin-bottom: 10px;
+}
+
+label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    overflow: hidden;
+  }
 
 .nav-bar-global {
     display: flex;
@@ -67,13 +86,38 @@ h1 {
 .login-reg-window {
     display: flex;
     flex-direction: column;
+    margin: 35px auto;
+    width: 300px;
+    max-width: 300px;
     font-family: monospace;
     background-color: #b44a4a;
     border-radius: 7px;
-    padding: 20px;
+    padding: 30px;
 }
 
-.login-reg-window .input-field {
-    padding: 5px;
-    border-radius: 5px;
+.input-field {
+    padding: 8px;
+    border-radius: 7px;
+    margin-bottom: 15px;
+}
+
+.submit-btn {
+    background-color: #130B11;
+    color: #FFFFFF;
+    border: none;
+    margin-top: 15px;
+    padding: 8px;
+    border-radius: 6px;
+    font-family: monospace;
+}
+
+.error {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #FF0000;
+    font-family: monospace;
+    font-style: italic;
+    z-index: 10;
 }
