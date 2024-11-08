@@ -13,6 +13,6 @@ def login_required(f):
 
 def get_db():
     # Open the database connection within a context manager
-    connection = sqlite3.connect("adventure.db")
-    connection.row_factory = sqlite3.Row  # Optional: to return rows as dictionaries
+    connection = sqlite3.connect("odyssey.db")
+    connection.row_factory = sqlite3.Row  # Return rows as dictionaries
     return connection
