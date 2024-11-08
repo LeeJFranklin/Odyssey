@@ -110,8 +110,8 @@ def login():
         # Close the connection once finished
         db.close()
 
-        # Render index template after successful login
-        return render_template("index.html")  
+        # Render dashboard template after successful login
+        return render_template("dashboard.html")
 
     return render_template("login.html")
 

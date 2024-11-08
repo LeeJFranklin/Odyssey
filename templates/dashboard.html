@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block content %}
+    <div class="dashboard-container">
+        <h2>Welcome, {{ username.value }}!</h2>
+        <hr>
+        <div class="user-info">
+            <p>Here’s a summary of your recent activities:</p>
+            <!-- Example of recent trips or adventures -->
+            <ul>
+                <li>Trip to Paris - Upcoming in December</li>
+                <li>Hiking in the Alps - Completed last June</li>
+            </ul>
+        </div>
+        
+        <div class="quick-actions">
+            <h3>Quick Actions</h3>
+            <button onclick="window.location.href='/create-trip'">Create New Trip</button>
+            <button onclick="window.location.href='/saved-destinations'">Saved Destinations</button>
+            <button onclick="window.location.href='/profile'">Go to Profile</button>
+        </div>
+
+        <div class="notifications">
+            <h3>Notifications</h3>
+            <!-- Display any active notifications -->
+            <p>No new notifications.</p>
+        </div>
+    </div>
+{% endblock %}
