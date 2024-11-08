@@ -115,6 +115,26 @@ def login():
 
     return render_template("login.html")
 
+# Dashboard route
+@app.route("/dashboard")
+@login_required
+def dashboard():
+
+    db = get_db()
+    db.row_factory = sqlite3.Row  # Enable dictionary-like row access
+    cursor = db.cursor()
+
+    # Fetch the username for the logged-in user based on session user_id
+    cursor.execute("SELECT username FROM users WHERE id = ?", (session["user_id"],))
+    user = cursor.fetchone()  # Fetch the first result (single row)
+    
+    # If user is not found, redirect to login (optional safety check)
+    if not user:
+        return redirect("/login")
+    
+    # Pass the username to the template
+    return render_template("dashboard.html", username=user["username"])
+
 # Log out route
 @app.route("/logout")
 @login_required

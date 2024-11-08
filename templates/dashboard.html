@@ -6,22 +6,22 @@
 
 {% block content %}
     <div class="dashboard-container">
-        <h2>Welcome, {{ username.value }}!</h2>
+        <h2>Welcome, {{ username }}!</h2>
         <hr>
         <div class="user-info">
             <p>Here’s a summary of your recent activities:</p>
+            
             <!-- Example of recent trips or adventures -->
             <ul>
-                <li>Trip to Paris - Upcoming in December</li>
-                <li>Hiking in the Alps - Completed last June</li>
+                <li></li>
+                <li></li>
             </ul>
         </div>
         
         <div class="quick-actions">
             <h3>Quick Actions</h3>
-            <button onclick="window.location.href='/create-trip'">Create New Trip</button>
-            <button onclick="window.location.href='/saved-destinations'">Saved Destinations</button>
-            <button onclick="window.location.href='/profile'">Go to Profile</button>
+            <button onclick="window.location.href='/create-trip'">Plan New Trip</button>
+            <button onclick="window.location.href='/saved-destinations'">Favourited Destinations</button>
         </div>
 
         <div class="notifications">
