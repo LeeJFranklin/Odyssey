@@ -135,6 +135,27 @@ def dashboard():
     # Pass the username to the template
     return render_template("dashboard.html", username=user["username"])
 
+# Planner route
+@app.route("/planner")
+@login_required
+def planner():
+    #TODO create planner section
+    return render_template("planner.html")
+
+# Explore route
+@app.route("/explore")
+@login_required
+def explore():
+    #TODO create explore section
+    return render_template("explore.html")
+
+# Settings route
+@app.route("/settings")
+@login_required
+def favourites():
+    #TODO create settings section
+    return render_template("settings.html")
+
 # Log out route
 @app.route("/logout")
 @login_required

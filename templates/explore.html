@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Explore
+{% endblock %}
+
+{% block content %}
+
+    <form action="/explore" method="get"></form>
+        <h2>Explore</h2>
+
+        <!-- Leaflet map -->
+        <div id="map"></div>
+
+        <!-- Search -->
+        <input class="input-field" id="location-search" autofocus autocomplete="off" type="text" placeholder="Enter a location">
+        <button class="submit-btn" onclick="searchLocation()">Search</button>
+    </form>
+
+{% endblock %}
