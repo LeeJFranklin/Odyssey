@@ -91,28 +91,27 @@ async function searchLocation() {
     }
 }
 
-// Generates a random float between -90 and 90 for Latitude
-const randomLat = () => (Math.random() < 0.5 ? -1 : 1) * (Math.random() * 90);
+async function surpriseLocation() {
+    fetch("static/data/destinations.json")
+    .then(response => response.json())  // Parse the JSON from the response
+    .then(data => {
+        // Select a random entry from the data array
+        const randomIndex = Math.floor(Math.random() * data.length);
+        const randomCity = data[randomIndex];  // Get the random city entry
+        
+        const city = randomCity.city;  // Access the city
+        const country = randomCity.country // Access the country
+        const lat = randomCity.coordinates.lat;  // Access the latitude
+        const lon = randomCity.coordinates.lon;  // Access the longitude
 
-// Generates a random float between -180 and 180 for Longitude
-const randomLon = () => (Math.random() < 0.5 ? -1 : 1) * (Math.random() * 180);
-
-async function supriseLocation() {
-    let lon = randomLon().toFixed(5);
-    let lat = randomLat().toFixed(5);
-    const response = await fetch(`api/geocode?lon=${encodeURIComponent(lon)}&lat=${encodeURIComponent(lat)}`);
-    const data = await response.json();
-    if (data.lat && data.lon) {
-        if (marker) map.removeLayer(marker);
-
-        // Add the new marker and store it in marker
-        marker = L.marker([data.lat, data.lon]).addTo(map)
-            .bindPopup(data.location)
+        // Add a marker for the random city on the map
+        if (marker) map.removeLayer(marker);  // Remove previous marker if it exists
+        marker = L.marker([lat, lon]).addTo(map)
+            .bindPopup(`<b>${city}, ${country}</b>`)
             .openPopup();
 
-        // Set the map view to the location
-        map.setView([data.lat, data.lon], 5);
-    } else {
-        supriseLocation();
-    }
+        // Set the map view to the random city's location
+        map.setView([lat, lon], 5);
+    })
+    .catch(error => console.error('Error loading the JSON data:', error));
 }
