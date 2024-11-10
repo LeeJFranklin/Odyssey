@@ -55,54 +55,64 @@ document.querySelector("form").addEventListener("submit", function(event) {
 });
 
 // Initialize the Leaflet map
-var map = L.map('map').setView([21.000, 10.00], 2);
+var map = L.map("map").setView([21.000, 10.00], 2);
 
 // Add OpenStreetMap tiles to Leaflet map
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,  // Maximum zoom level to control zooming in
     minZoom: 2,    // Minimum zoom level to control zooming out
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-let currentMarker;  // Variable to store the current marker
-
 // Add event listener to input field for Enter key
-document.getElementById('location-search').addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
+document.getElementById("location-search").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
         searchLocation();  // Call the searchLocation function when Enter is pressed
     }
 });
 
-// Add GeoLocation search with Photon API
+let marker;  // Variable to store the map marker
+
+// Adds GeoLocation search to front-end from Photon
 async function searchLocation() {
-    const location = document.getElementById('location-search').value;
-    const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(location)}`;
+    const location = document.getElementById("location-search").value;
+    const response = await fetch(`/api/geocode?location=${encodeURIComponent(location)}`);
+    const data = await response.json();
+    if (data.lat && data.lon) {
+        if (marker) map.removeLayer(marker);
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        L.marker()
+        // Add the new marker and store it in marker
+        marker = L.marker([data.lat, data.lon]).addTo(map)
 
-        if (data && data.features && data.features.length > 0) {
-            const { coordinates } = data.features[0].geometry;
-            const [lon, lat] = coordinates;
+        // Set the map view to the location
+        map.setView([data.lat, data.lon], 5);
+    } else {
+        alert(data.error || "Location not found");
+    }
+}
 
-            // Remove the existing marker if there is one
-            if (currentMarker) {
-                map.removeLayer(currentMarker);
-            }
+// Generates a random float between -90 and 90 for Latitude
+const randomLat = () => (Math.random() < 0.5 ? -1 : 1) * (Math.random() * 90);
 
-            // Set the map view to the location
-            map.setView([lat, lon], 5);
+// Generates a random float between -180 and 180 for Longitude
+const randomLon = () => (Math.random() < 0.5 ? -1 : 1) * (Math.random() * 180);
 
-            // Add the new marker and store it in currentMarker
-            currentMarker = L.marker([lat, lon]).addTo(map)
-                .bindPopup(`${location}`)
-                .openPopup();
-        } else {
-            alert("Location not found.");
-        }
-    } catch (error) {
-        console.error("Error with Photon API:", error);
+async function supriseLocation() {
+    let lon = randomLon().toFixed(5);
+    let lat = randomLat().toFixed(5);
+    const response = await fetch(`api/geocode?lon=${encodeURIComponent(lon)}&lat=${encodeURIComponent(lat)}`);
+    const data = await response.json();
+    if (data.lat && data.lon) {
+        if (marker) map.removeLayer(marker);
+
+        // Add the new marker and store it in marker
+        marker = L.marker([data.lat, data.lon]).addTo(map)
+            .bindPopup(data.location)
+            .openPopup();
+
+        // Set the map view to the location
+        map.setView([data.lat, data.lon], 5);
+    } else {
+        supriseLocation();
     }
 }

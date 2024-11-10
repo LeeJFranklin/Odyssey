@@ -8,13 +8,15 @@
 
     <form action="/explore" method="get"></form>
         <h2>Explore</h2>
-
-        <!-- Leaflet map -->
-        <div id="map"></div>
-
-        <!-- Search -->
-        <input class="input-field" id="location-search" autofocus autocomplete="off" type="text" placeholder="Enter a location">
-        <button class="submit-btn" onclick="searchLocation()">Search</button>
+        <hr>
+        <div class="explore-window">
+            <!-- Search -->
+            <input class="input-field" id="location-search" autofocus autocomplete="off" type="text" placeholder="Choose a location">
+            <button class="submit-btn" onclick="searchLocation()">Search</button>
+            <button class="suprise-btn" onclick="supriseLocation()">Suprise Me</button>
+        </div>
+            <!-- Leaflet map -->
+            <div id="map"></div>
     </form>
 
 {% endblock %}
