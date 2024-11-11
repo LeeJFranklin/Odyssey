@@ -35,6 +35,14 @@ h2 {
     margin-bottom: 20px;
 }
 
+h3 {
+    color: #130B11;
+    font-size: 2em;
+    text-align: left;
+    font-family: monospace, sans-serif;
+    margin-bottom: 20px;
+}
+
 label {
     position: absolute;
     width: 1px;
@@ -101,8 +109,30 @@ label {
     padding: 30px;
 }
 
-.explore-window {
-    padding: 5px;
+.explore-template-div {
+    display: block;
+    margin: 20px;
+    width: 90vw;
+}
+
+.explore-template-input {
+    display: flex;
+    flex-direction: column;
+    width: inherit;
+}
+
+.explore-leftside {
+    display: flex;
+    flex-direction: column;
+    float: left;
+    width: 45vw;
+}
+
+.explore-rightside {
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+    width: 45vw;
 }
 
 .input-field {
@@ -121,12 +151,20 @@ label {
     font-family: monospace;
 }
 
+.explore-btn {
+    background-color: #130B11;
+    color: #FFFFFF;
+    border: none;
+    padding: 9px;
+    border-radius: 6px;
+    font-family: monospace;
+}
+
 .surprise-btn {
     background-color: #bb7d00;
     color: #FFFFFF;
     border: none;
-    margin-top: 15px;
-    margin-left: 70px;
+    margin-top: 10px;
     padding: 9px;
     border-radius: 6px;
     font-family: monospace;
@@ -144,7 +182,12 @@ label {
 }
 
 #map {
+    display: block;
     height: 350px;
-    width: 60vw;
-    border-radius: 8px;
+    border-radius: 10px;
+}
+
+#location-info {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: justify;
 }

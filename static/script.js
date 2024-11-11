@@ -64,12 +64,23 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
+// Add event listener to the button for click event
+document.getElementById("explore-search-btn").addEventListener("click", function(event) {
+    event.preventDefault();  // Prevent default behavior, such as form submission
+    searchLocation();  // Call the searchLocation function
+    getLocationInfo(); // Call the getLocationInfo function
+});
+
 // Add event listener to input field for Enter key
 document.getElementById("location-search").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
+        event.preventDefault(); // Prevent default behavior, such as form submission
         searchLocation();  // Call the searchLocation function when Enter is pressed
+        getLocationInfo(); // Call the searchLocationInfo function when Enter is pressed
     }
 });
+
+const locationName = document.getElementById("location-name");
 
 let marker;  // Variable to store the map marker
 
@@ -84,12 +95,32 @@ async function searchLocation() {
         // Add the new marker and store it in marker
         marker = L.marker([data.lat, data.lon]).addTo(map)
 
+        locationName.innerHTML = `<b>${location.toUpperCase()}</b>`;
+
         // Set the map view to the location
         map.setView([data.lat, data.lon], 5);
     } else {
         alert(data.error || "Location not found");
     }
 }
+
+// Function to send data to Flask using AJAX (fetch)
+async function getLocationInfo() {
+    const location = document.getElementById("location-search").value;
+    
+    // Sending POST request to Flask route
+    const response = await fetch("/explore", {
+        method: "POST",
+        body: JSON.stringify({ location: location }), // Send location to Flask
+        headers: { "Content-Type": "application/json" }
+    });
+
+    const data = await response.json();
+
+    // Update the HTML with the new data received from Flask (partial render)
+    document.getElementById("location-info").innerHTML = data.location_info;
+}
+
 
 async function surpriseLocation() {
     fetch("static/data/destinations.json")
@@ -107,11 +138,13 @@ async function surpriseLocation() {
         // Add a marker for the random city on the map
         if (marker) map.removeLayer(marker);  // Remove previous marker if it exists
         marker = L.marker([lat, lon]).addTo(map)
-            .bindPopup(`<b>${city}, ${country}</b>`)
-            .openPopup();
+            
+        
+        locationName.innerHTML = `${city}, ${country}`;
 
         // Set the map view to the random city's location
         map.setView([lat, lon], 5);
     })
     .catch(error => console.error('Error loading the JSON data:', error));
 }
+

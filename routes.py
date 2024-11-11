@@ -1,9 +1,9 @@
 import sqlite3
 
-from flask import render_template, request, session, redirect, url_for, flash
+from flask import jsonify, render_template, request, session, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from utils import get_db, login_required
+from utils import get_db, info_scraper, login_required
 
 def init_routes(app):
     # Home route
@@ -115,11 +115,30 @@ def init_routes(app):
         return render_template("planner.html")
 
     # Explore route
-    @app.route("/explore")
+    @app.route("/explore", methods=["GET", "POST"])
     @login_required
     def explore():
-        #TODO create explore section
+        location_info = None
+
+        if request.method == "POST":
+            # Get the JSON data sent from the frontend
+            data = request.get_json()
+
+            # Extract the location from the JSON data
+            location = data.get("location")
+
+            if location:
+                # Pass the location to the scraper function
+                location_info = info_scraper(location)
+            else:
+                location_info = "No information on this location."
+
+            # Return a JSON response with the location information
+            return jsonify({"location_info": location_info})
+
+        # Handle GET requests and render the page
         return render_template("explore.html")
+
 
     # Settings route
     @app.route("/settings")

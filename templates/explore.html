@@ -6,17 +6,27 @@
 
 {% block content %}
 
-    <form action="/explore" method="get"></form>
-        <h2>Explore</h2>
+    <form action="/explore" method="post">
+    <div class="explore-template-div">
+        <h3>Explore New Destinations</h3>
         <hr>
-        <div class="explore-window">
-            <!-- Search -->
-            <input class="input-field" id="location-search" autofocus autocomplete="off" type="text" placeholder="Choose a location">
-            <button class="submit-btn" onclick="searchLocation()">Search</button>
-            <button class="surprise-btn" onclick="surpriseLocation()">Surprise Me</button>
-        </div>
+
+        <div class="explore-leftside">
             <!-- Leaflet map -->
             <div id="map"></div>
+            <div class="explore-template-input">
+                <!-- Search -->
+                <input class="input-field" id="location-search" name="location-search" autofocus autocomplete="off" type="text" placeholder="Choose a location">
+                <button class="explore-btn" id="explore-search-btn" type="submit">Search</button>
+                <button class="surprise-btn" onclick="surpriseLocation()" type="submit">Surprise Me</button>
+            </div>
+        </div>
+
+        <div class="explore-rightside">
+            <h3 id="location-name"></h3>
+            <div id="location-info"></v>
+        </div>
+    </div>
     </form>
 
 {% endblock %}
