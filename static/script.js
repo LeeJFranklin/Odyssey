@@ -128,7 +128,6 @@ async function surpriseLocation() {
         if (marker) map.removeLayer(marker);  // Remove previous marker if it exists
         marker = L.marker([lat, lon]).addTo(map)
             
-        
         locationName.innerHTML = `${city}, ${country}`;
 
         // Set the map view to the random city's location

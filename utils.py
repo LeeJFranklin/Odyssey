@@ -1,3 +1,4 @@
+import re
 import requests
 import sqlite3
 
@@ -58,7 +59,7 @@ def info_scraper(loc):
 
         # Extract and return the first non-empty paragraph
         for paragraph in paragraphs:
-            text = paragraph.text.strip()
+            text = re.sub(r"\[.*?\]|\(.*?\)", "", paragraph.text).strip()
             if text:
                 return text  # Return the first meaningful paragraph found
         
