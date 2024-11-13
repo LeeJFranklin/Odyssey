@@ -6,8 +6,36 @@
 
 {% block content %}
 
-    <form action="/planner" method="get"></form>
-        <h2>Planner</h2>
+    <form action="/planner" method="post"></form>
+        <h3>Planner</h3>
+        <hr>
+        <div>
+            <div>
+                <input id="new_date" type="date">
+                <input id="new_time" type="time">
+                <input id="new_activity" placeholder="Add activity" type="text">
+                <button type="submit">Add</button>
+                <hr>
+                <table>
+                    <tr>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Time
+                        </th>
+                        <th>
+                            Activity
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </form>
 
 {% endblock %}
