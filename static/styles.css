@@ -191,3 +191,38 @@ label {
     font-family: Arial, Helvetica, sans-serif;
     text-align: justify;
 }
+
+/* Basic table setup */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Removes double borders */
+    margin: 1em 0; /* Adds space around the table */
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Table headers */
+th {
+    background-color: #4CAF50; /* Header background color */
+    color: white; /* Header text color */
+    font-weight: bold;
+    padding: 12px; /* Adds padding to header cells */
+    text-align: left; /* Left-align header text */
+}
+
+/* Table cells */
+td {
+    padding: 12px; /* Adds padding to table cells */
+    border-bottom: 1px solid #ddd; /* Adds border to table rows */
+}
+
+/* Alternating row colors */
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Light grey color for even rows */
+}
+
+/* Hover effect */
+tr:hover {
+    background-color: #f5f5f5; /* Slightly darker background on hover */
+}

@@ -11,25 +11,23 @@
             <h2>Welcome, {{ username }}!</h2>
             <hr>
             <div class="user-info">
-                <p>Places visited</p>
-                
-                <!-- Example of recent trips or adventures -->
-                <ul>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </div>
-            
-            <div class="quick-actions">
-                <h3>Quick Actions</h3>
-                <button onclick="window.location.href='/create-trip'">Plan New Trip</button>
-                <button onclick="window.location.href='/saved-destinations'">Future Destinations</button>
-            </div>
 
-            <div class="notifications">
-                <h3>Notifications</h3>
-                <!-- Display any active notifications -->
-                <p>No new notifications.</p>
+                <!-- List of favourite locations -->
+                <table>
+                    <thead>Favourites</thead>
+                    <tr>
+                    <th>
+                        Location
+                    </th>
+                    </tr>
+                    {% for f in favourite_locations %}
+                    <tr>
+                    <td>
+                        {{ f.location }}</li>
+                    </td>
+                    </tr>
+                    {% endfor %}
+                </table>
             </div>
         </div>
     </form>

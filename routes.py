@@ -97,15 +97,21 @@ def init_routes(app):
         cursor = db.cursor()
 
         # Fetch the username for the logged-in user based on session user_id
-        cursor.execute("SELECT username FROM users WHERE id = ?", (session["user_id"],))
+        cursor.execute(
+            "SELECT username FROM users WHERE id = ?;", (session["user_id"],)
+            )
         user = cursor.fetchone()  # Fetch the first result (single row)
+
+        favourite_locations = cursor.execute(
+            "SELECT location FROM favourites WHERE user_id = ?;", (session["user_id"],)
+            ).fetchall()
         
         # If user is not found, redirect to login (optional safety check)
         if not user:
             return redirect("/login")
         
         # Pass the username to the template
-        return render_template("dashboard.html", username=user["username"])
+        return render_template("dashboard.html", username=user["username"], favourite_locations=favourite_locations)
 
     # Planner route
     @app.route("/planner")
@@ -121,23 +127,42 @@ def init_routes(app):
         location_info = None
 
         if request.method == "POST":
-            # Get the JSON data sent from the frontend
-            data = request.get_json()
+            if request.get_json():
+                # Get the JSON data sent from the frontend
+                data = request.get_json()
 
-            # Extract the location from the JSON data
-            location = data.get("location")
+                # Extract the location from the JSON data
+                location = data.get("location")
 
-            if location:
-                # Pass the location to the scraper function
-                location_info = info_scraper(location)
-            else:
-                location_info = "No information on this location."
+                if location:
+                    # Pass the location to the scraper function
+                    location_info = info_scraper(location)
+                else:
+                    location_info = "No information on this location."
 
-            # Return a JSON response with the location information
-            return jsonify({"location_info": location_info})
+                # Return a JSON response with the location information
+                return jsonify({"location_info": location_info})
 
         # Handle GET requests and render the page
         return render_template("explore.html")
+
+    # route for adding location to the favourites database
+    @app.route("/add_to_favourites", methods=["POST"])
+    @login_required
+    def add_to_favourites():
+        data = request.get_json()
+        location = data.get("location")
+
+        if location:
+            db = get_db()
+            db.execute(
+                "INSERT INTO favourites (user_id, location) VALUES (?, ?);",
+                (session["user_id"], location)
+            )
+            db.commit()
+            return jsonify({"success": True}), 200
+        else:
+            return jsonify({"success": False, "error": "No location provided"}), 400
 
 
     # Settings route

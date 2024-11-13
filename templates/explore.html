@@ -17,14 +17,15 @@
             <div class="explore-template-input">
                 <!-- Search -->
                 <input class="input-field" id="location-search" autofocus autocomplete="off" type="text" placeholder="Choose a location">
-                <button class="explore-btn" id="explore-search-btn" type="submit">Search</button>
-                <button class="surprise-btn" id="explore-surprise-btn" type="submit">Surprise Me</button>
+                <button class="explore-btn" id="explore-search-btn" name="action" value="search" type="submit">Search</button>
+                <button class="surprise-btn" id="explore-surprise-btn" name="action" value="surprise" type="submit">Surprise Me</button>
             </div>
         </div>
 
         <div class="explore-rightside">
             <h3 id="location-name"></h3>
-            <div id="location-info"></v>
+            <div id="location-info"></div>
+            <button class="submit-btn" onclick="addToFavourites()" type="submit">Add to Favourites</button>
         </div>
     </div>
     </form>

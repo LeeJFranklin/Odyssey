@@ -55,7 +55,7 @@ document.querySelector("form").addEventListener("submit", function(event) {
 });
 
 // Initialize the Leaflet map
-var map = L.map("map").setView([21.000, 10.00], 2);
+const map = L.map("map").setView([21.000, 10.00], 2);
 
 // Add OpenStreetMap tiles to Leaflet map
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -152,4 +152,25 @@ async function getLocationInfo(location) {
 
     // Update the HTML with the new data received from Flask (partial render)
     document.getElementById("location-info").innerHTML = data.location_info;
+}
+
+function addToFavourites() {
+    const locationName = document.getElementById("location-name").textContent;
+
+    fetch("/add_to_favourites", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ location: locationName })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Location added to favourites!");
+        } else {
+            alert("Failed to add location.");
+        }
+    })
+    .catch(error => console.error("Error:", error));
 }
