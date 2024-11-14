@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+
+    <form action="/home" method="post">
+        <div class="template-div">
+            <h3>Welcome, {{ username }}!</h3>
+            <hr>
+            <div id="trips-home">
+                <input id="city-input" name="city-input" class="input-field" autofocus autocomplete="off" placeholder="City" type="text">
+                <input id="country-input" name="country-input" class="input-field" autocomplete="off" placeholder="Country" type="text">
+                <button id="plan_new_trip" class="submit-btn" type="submit">
+                    Plan a new trip
+                </button>
+                <hr>
+                <table>
+                    <tr>
+                        <th>
+                            Saved Trips
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <!-- Space for saved or in progress trips -->  
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </form>
+
+    <form action="/explore" method="post">
+        <div class="template-div">
+            <h3>Explore New Destinations</h3>
+            <hr>
+    
+            <div class="div-leftside">
+                <!-- Leaflet map -->
+                <div id="map"></div>
+            </div>
+    
+            <div class="div-rightside">
+                <h3 id="location-name"></h3>
+                <div id="location-info"></div>
+                <button class="submit-btn" onclick="addToFavourites()" type="submit">Plan a Trip</button>
+                <button class="surprise-btn" id="explore-surprise-btn" name="action" value="surprise" type="submit">Suggest New Destination</button>
+            </div>
+        </div>
+    </form>
+
+    <hr>
+    <ul class="list-style-none">
+        <li>
+            <a href="/settings">
+                <span>Account Settings</span>
+            </a>
+        </li>
+    </ul>
+
+{% endblock %}

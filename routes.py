@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from utils import get_db, info_scraper, login_required
 
 def init_routes(app):
-    # Home route
+    # Landing page route
     @app.route("/")
     def index():
 
@@ -83,15 +83,15 @@ def init_routes(app):
             # Close the connection once finished
             db.close()
 
-            # Render dashboard template after successful login
-            return render_template("dashboard.html")
+            # Render home template after successful login
+            return render_template("home.html")
 
         return render_template("login.html")
 
-    # Dashboard route
-    @app.route("/dashboard")
+    # Home route
+    @app.route("/home", methods=["GET", "POST"])
     @login_required
-    def dashboard():
+    def home():
         db = get_db()
         db.row_factory = sqlite3.Row  # Enable dictionary-like row access
         cursor = db.cursor()
@@ -101,17 +101,19 @@ def init_routes(app):
             "SELECT username FROM users WHERE id = ?;", (session["user_id"],)
             )
         user = cursor.fetchone()  # Fetch the first result (single row)
-
-        favourite_locations = cursor.execute(
-            "SELECT location FROM favourites WHERE user_id = ?;", (session["user_id"],)
-            ).fetchall()
         
         # If user is not found, redirect to login (optional safety check)
         if not user:
             return redirect("/login")
         
+        if request.method == "POST":
+            city = request.form.get("city")
+            country = request.form.get("country")
+
+            return render_template("planner.html")
+        
         # Pass the username to the template
-        return render_template("dashboard.html", username=user["username"], favourite_locations=favourite_locations)
+        return render_template("home.html", username=user["username"])
 
     # Planner route
     @app.route("/planner")
@@ -120,7 +122,7 @@ def init_routes(app):
         #TODO create planner section
         return render_template("planner.html")
 
-    # Explore route
+    # Home page explore section
     @app.route("/explore", methods=["GET", "POST"])
     @login_required
     def explore():
@@ -144,25 +146,7 @@ def init_routes(app):
                 return jsonify({"location_info": location_info})
 
         # Handle GET requests and render the page
-        return render_template("explore.html")
-
-    # route for adding location to the favourites database
-    @app.route("/add_to_favourites", methods=["POST"])
-    @login_required
-    def add_to_favourites():
-        data = request.get_json()
-        location = data.get("location")
-
-        if location:
-            db = get_db()
-            db.execute(
-                "INSERT INTO favourites (user_id, location) VALUES (?, ?);",
-                (session["user_id"], location)
-            )
-            db.commit()
-            return jsonify({"success": True}), 200
-        else:
-            return jsonify({"success": False, "error": "No location provided"}), 400
+        return render_template("home.html")
 
 
     # Settings route

@@ -65,20 +65,6 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 }).addTo(map);
 
 // Add event listener to the button for click event
-document.getElementById("explore-search-btn").addEventListener("click", function(event) {
-    event.preventDefault();  // Prevent default behavior, such as form submission
-    searchLocation();  // Call the searchLocation function
-});
-
-// Add event listener to input field for Enter key
-document.getElementById("location-search").addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        event.preventDefault(); // Prevent default behavior, such as form submission
-        searchLocation();  // Call the searchLocation function when Enter is pressed
-    }
-});
-
-// Add event listener to the button for click event
 document.getElementById("explore-surprise-btn").addEventListener("click", function(event) {
     event.preventDefault();  // Prevent default behavior, such as form submission
     surpriseLocation();  // Call the searchLocation function
@@ -87,29 +73,6 @@ document.getElementById("explore-surprise-btn").addEventListener("click", functi
 const locationName = document.getElementById("location-name");
 
 let marker;  // Variable to store the map marker
-
-// Adds GeoLocation search to front-end from Photon
-async function searchLocation() {
-    const location = document.getElementById("location-search").value;
-    const response = await fetch(`/api/geocode?location=${encodeURIComponent(location)}`);
-    const data = await response.json();
-    if (data.lat && data.lon) {
-        if (marker) map.removeLayer(marker);
-
-        // Add the new marker and store it in marker
-        marker = L.marker([data.lat, data.lon]).addTo(map)
-
-        locationName.innerHTML = `<b>${location.toUpperCase()}</b>`;
-
-        // Set the map view to the location
-        map.setView([data.lat, data.lon], 5);
-
-        // Get location info
-        getLocationInfo(location);
-    } else {
-        alert(data.error || "Location not found");
-    }
-}
 
 async function surpriseLocation() {
     fetch("static/data/destinations.json")
@@ -152,25 +115,4 @@ async function getLocationInfo(location) {
 
     // Update the HTML with the new data received from Flask (partial render)
     document.getElementById("location-info").innerHTML = data.location_info;
-}
-
-function addToFavourites() {
-    const locationName = document.getElementById("location-name").textContent;
-
-    fetch("/add_to_favourites", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ location: locationName })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("Location added to favourites!");
-        } else {
-            alert("Failed to add location.");
-        }
-    })
-    .catch(error => console.error("Error:", error));
 }

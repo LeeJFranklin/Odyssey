@@ -109,30 +109,24 @@ label {
     padding: 30px;
 }
 
-.explore-template-div {
+.template-div {
     display: block;
     margin: 20px;
-    width: 90vw;
+    width: 70vw;
 }
 
-.explore-template-input {
-    display: flex;
-    flex-direction: column;
-    width: inherit;
-}
-
-.explore-leftside {
+.div-leftside {
     display: flex;
     flex-direction: column;
     float: left;
-    width: 45vw;
+    width: 35vw;
 }
 
-.explore-rightside {
+.div-rightside {
     display: flex;
     flex-direction: column;
     padding-left: 20px;
-    width: 45vw;
+    width: 35vw;
 }
 
 .input-field {
@@ -146,15 +140,6 @@ label {
     color: #FFFFFF;
     border: none;
     margin-top: 15px;
-    padding: 9px;
-    border-radius: 6px;
-    font-family: monospace;
-}
-
-.explore-btn {
-    background-color: #130B11;
-    color: #FFFFFF;
-    border: none;
     padding: 9px;
     border-radius: 6px;
     font-family: monospace;
@@ -190,6 +175,20 @@ label {
 #location-info {
     font-family: Arial, Helvetica, sans-serif;
     text-align: justify;
+}
+
+#trips-home {
+    display: block;
+    margin: 0 auto;
+    width: 60vw;
+}
+
+#trips-home input {
+    width: 20vw;
+}
+
+#plan_new_trip {
+    width: 19vw;
 }
 
 /* Basic table setup */

@@ -7,35 +7,65 @@
 {% block content %}
 
     <form action="/planner" method="post"></form>
-        <h3>Planner</h3>
+        <h3>Trip to {{ location }}</h3>
         <hr>
-        <div>
-            <div>
-                <input id="new_date" type="date">
-                <input id="new_time" type="time">
-                <input id="new_activity" placeholder="Add activity" type="text">
-                <button type="submit">Add</button>
-                <hr>
-                <table>
-                    <tr>
-                        <th>
-                            Date
-                        </th>
-                        <th>
-                            Time
-                        </th>
-                        <th>
-                            Activity
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-
-                        </td>
-                    </tr>
-                </table>
-            </div>
+        <div class="div-leftside">
+            <ul>
+                <li class="list-style-none">
+                    Dates: From {{ startdate }} to {{ enddate }}
+                </li>
+                <li class="list-style-none">
+                    Transport Type: {{ transport }}
+                </li>
+                <li class="list-style-none">
+                    Accomodation: {{ accomodation }}
+                </li>
+                <li class="list-style-none">
+                    Budget: {{ budget }}
+                </li>
+            </ul>
         </div>
+        <div class="div-rightside">
+            <div id="map"></div>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Time
+                    </th>
+                    <th>
+                        Activity
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <hr>    
+        <div class="div-leftside">
+            <table>
+                <tr>
+                    <th>
+                        Packing List
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="div-rightside">
+            <h3>Usful Information</h3>
+        </div>        
     </form>
 
 {% endblock %}
