@@ -54,6 +54,33 @@ document.querySelector("form").addEventListener("submit", function(event) {
     }
 });
 
+document.querySelector("form").addEventListener("submit", function(event) {
+    const city = document.getElementById("city-input");
+    const country = document.getElementById("country-input");
+    const planningErrorMsg = document.getElementById("planning-error");
+
+    // Clear previous error message
+    planningErrorMsg.innerHTML = "";
+
+    // Prevent submission if there are validation errors
+    let validationError = false;
+
+    if (city.value === "") {
+        planningErrorMsg.innerHTML = "Please choose a city";
+        validationError = true;
+    }
+
+    else if (country.value === "") {
+        planningErrorMsg.innerHTML = "Please choose a country";
+        validationError = true;
+    }
+
+    // Prevent form submission if there were any validation errors
+    if (validationError) {
+        event.preventDefault();
+    }
+});
+
 // Initialize the Leaflet map
 const map = L.map("map").setView([21.000, 10.00], 2);
 

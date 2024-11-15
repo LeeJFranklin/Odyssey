@@ -37,3 +37,6 @@ htmlcov/
 
 # flask_session folder
 flask_session/
+
+# sql query templates
+queries.sql

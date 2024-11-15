@@ -25,7 +25,7 @@ def init_routes(app):
             cursor = db.cursor()
                 
             # Check if username or email already exists
-            cursor.execute("SELECT * FROM users WHERE username = ? OR email = ?", (request.form.get("username"), request.form.get("email")))
+            cursor.execute("SELECT * FROM users WHERE username = ? OR email = ?;", (request.form.get("username"), request.form.get("email")))
             existing_user = cursor.fetchone()
             if existing_user:
                 flash("Username or email already exists", "error")
@@ -110,6 +110,13 @@ def init_routes(app):
             city = request.form.get("city")
             country = request.form.get("country")
 
+            cursor.execute(
+                "INSERT INTO trips (user_id, city, country) VALUES (?, ?, ?);", (session["user_id"], city, country)
+            )
+
+            # Commit the insert
+            db.commit()
+
             return render_template("planner.html")
         
         # Pass the username to the template
@@ -119,7 +126,14 @@ def init_routes(app):
     @app.route("/planner")
     @login_required
     def planner():
-        #TODO create planner section
+        db = get_db()
+        db.row_factory = sqlite3.Row  # Enable dictionary-like row access
+        cursor = db.cursor()
+
+        # Fetch trip information
+        
+
+
         return render_template("planner.html")
 
     # Home page explore section
