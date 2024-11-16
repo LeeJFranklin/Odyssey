@@ -11,36 +11,38 @@
         <h3>Trip to <span id="planner-location">{{ t.city }}, {{ t.country }}</span></h3>
         <hr>
         <div class="div-leftside">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Field</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Start Date</td>
-                        <td>{{ t.startdate if t.startdate else "Not provided" }}</td>
-                    </tr>
-                    <tr>
-                        <td>End Date</td>
-                        <td>{{ t.enddate if t.enddate else "Not provided" }}</td>
-                    </tr>
-                    <tr>
-                        <td>Transport Type</td>
-                        <td>{{ t.transport if t.transport else "Not provided" }}</td>
-                    </tr>
-                    <tr>
-                        <td>Accommodation</td>
-                        <td>{{ t.accommodation if t.accommodation else "Not provided" }}</td>
-                    </tr>
-                    <tr>
-                        <td>Budget</td>
-                        <td>{{ t.budget if t.budget else "Not provided" }}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div id="editContainer">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Details</th>
+                            <th><a href="#" onclick="loadEditForm()">Add/Edit</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Start Date</td>
+                            <td>{{ t.startdate if t.startdate else "Not provided" }}</td>
+                        </tr>
+                        <tr>
+                            <td>End Date</td>
+                            <td>{{ t.enddate if t.enddate else "Not provided" }}</td>
+                        </tr>
+                        <tr>
+                            <td>Transport Type</td>
+                            <td>{{ t.transport if t.transport else "Not provided" }}</td>
+                        </tr>
+                        <tr>
+                            <td>Accommodation</td>
+                            <td>{{ t.accommodation if t.accommodation else "Not provided" }}</td>
+                        </tr>
+                        <tr>
+                            <td>Budget</td>
+                            <td>{{ t.budget if t.budget else "Not provided" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         {% endfor %}
         <div class="div-rightside">

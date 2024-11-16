@@ -186,3 +186,43 @@ document.addEventListener("DOMContentLoaded", function () {
         searchLocation();
     }
 });
+
+function loadEditForm() {
+    const container = document.getElementById("editContainer");
+
+    // Dynamically load the form into the container
+    container.innerHTML = `
+        <form id="editForm">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Details</th>
+                        <th><a href="#" onclick="submitEditForm()">Save</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Start Date</td>
+                        <td><input type="date" id="startdate" name="startdate"></td>
+                    </tr>
+                    <tr>
+                        <td>End Date</td>
+                        <td><input type="date" id="enddate" name="enddate"></td>
+                    </tr>
+                    <tr>
+                        <td>Transport Type</td>
+                        <td><input type="text" id="transport" name="transport"></td>
+                    </tr>
+                    <tr>
+                        <td>Accommodation</td>
+                        <td><input type="text" id="accommodation" name="accommodation"></td>
+                    </tr>
+                    <tr>
+                        <td>Budget</td>
+                        <td><input type="text" id="budget" name="budget"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    `;
+}
