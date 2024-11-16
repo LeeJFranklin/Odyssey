@@ -1,3 +1,4 @@
+// Registering validation
 document.querySelector("form").addEventListener("submit", function(event) {
     const registerUsername = document.getElementById("register-username");
     const registerEmail = document.getElementById("register-email")
@@ -54,6 +55,7 @@ document.querySelector("form").addEventListener("submit", function(event) {
     }
 });
 
+// Validation for entering a destination for a trip
 document.querySelector("form").addEventListener("submit", function(event) {
     const city = document.getElementById("city-input");
     const country = document.getElementById("country-input");
@@ -92,9 +94,16 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 }).addTo(map);
 
 // Add event listener to the button for click event
-document.getElementById("explore-surprise-btn").addEventListener("click", function(event) {
-    event.preventDefault();  // Prevent default behavior, such as form submission
-    surpriseLocation();  // Call the searchLocation function
+document.addEventListener("DOMContentLoaded", function () {
+    const surpriseButton = document.getElementById("explore-surprise-btn");
+
+    // Check if the button exists
+    if (surpriseButton) {
+        surpriseButton.addEventListener("click", function(event) {
+            event.preventDefault();  // Prevent default behavior, such as form submission
+            surpriseLocation();  // Call the surpriseLocation function
+        });
+    }
 });
 
 const locationName = document.getElementById("location-name");
@@ -129,6 +138,25 @@ async function surpriseLocation() {
     .catch(error => console.error('Error loading the JSON data:', error));
 }
 
+// Add GeoLocation search with Photon API
+async function searchLocation() {
+    const location = document.getElementById("planner-location").textContent;
+    const response = await fetch(`/api/geocode?location=${encodeURIComponent(location)}`);
+    const data = await response.json();
+    if (data.lat && data.lon) {
+        if (marker) map.removeLayer(marker);
+
+        // Add the new marker and store it in marker
+        marker = L.marker([data.lat, data.lon]).addTo(map)
+
+        // Set the map view to the location
+        map.setView([data.lat, data.lon], 4);
+
+    } else {
+        alert(data.error || "Location not found");
+    }
+}
+
 // Function to send data to Flask using AJAX (fetch)
 async function getLocationInfo(location) {  
     // Sending POST request to Flask route
@@ -143,3 +171,18 @@ async function getLocationInfo(location) {
     // Update the HTML with the new data received from Flask (partial render)
     document.getElementById("location-info").innerHTML = data.location_info;
 }
+
+// Runs the surpriseLocation() function on page load
+document.addEventListener("DOMContentLoaded", function () {
+    if (document.querySelector("#explore-div")) {
+        surpriseLocation();
+    }
+});
+
+// Runs the searchLocation() function on page load
+document.addEventListener("DOMContentLoaded", function () {
+    // Check if the element exists
+    if (document.getElementById("planner-location")) {
+        searchLocation();
+    }
+});

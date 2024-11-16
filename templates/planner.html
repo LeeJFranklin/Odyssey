@@ -6,28 +6,50 @@
 
 {% block content %}
 
-    <form action="/planner" method="post"></form>
-        <h3>Trip to {{ location }}</h3>
+    <form action="/planner" method="post">
+        {% for t in trip %}
+        <h3>Trip to <span id="planner-location">{{ t.city }}, {{ t.country }}</span></h3>
         <hr>
         <div class="div-leftside">
-            <ul>
-                <li class="list-style-none">
-                    Dates: From {{ startdate }} to {{ enddate }}
-                </li>
-                <li class="list-style-none">
-                    Transport Type: {{ transport }}
-                </li>
-                <li class="list-style-none">
-                    Accomodation: {{ accomodation }}
-                </li>
-                <li class="list-style-none">
-                    Budget: {{ budget }}
-                </li>
-            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Start Date</td>
+                        <td>{{ t.startdate if t.startdate else "Not provided" }}</td>
+                    </tr>
+                    <tr>
+                        <td>End Date</td>
+                        <td>{{ t.enddate if t.enddate else "Not provided" }}</td>
+                    </tr>
+                    <tr>
+                        <td>Transport Type</td>
+                        <td>{{ t.transport if t.transport else "Not provided" }}</td>
+                    </tr>
+                    <tr>
+                        <td>Accommodation</td>
+                        <td>{{ t.accommodation if t.accommodation else "Not provided" }}</td>
+                    </tr>
+                    <tr>
+                        <td>Budget</td>
+                        <td>{{ t.budget if t.budget else "Not provided" }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+        {% endfor %}
         <div class="div-rightside">
-            <div id="map"></div>
+            <div id="planning-map">
+                <div id="map"></div>
+            </div>
         </div>
+        <hr>
+        <h3>Itinerary</h3>
         <div>
             <table>
                 <tr>
@@ -41,10 +63,13 @@
                         Activity
                     </th>
                 </tr>
-                <tr>
-                    <td>
-
-                    </td>
+                {% for activity in activities %}
+                    <tr>
+                        <td>{{ activity.date }}</td>
+                        <td>{{ activity.time }}</td>
+                        <td>{{ activity.description }}</td>
+                    </tr>
+                {% endfor %}
                 </tr>
             </table>
         </div>
@@ -52,15 +77,19 @@
         <div class="div-leftside">
             <table>
                 <tr>
-                    <th>
-                        Packing List
-                    </th>
+                    <th>Packing List</th>
                 </tr>
+                {% if packing_list %}
+                {% for item in packing_list %}
                 <tr>
-                    <td>
-
-                    </td>
+                    <td>{{ item }}</td>
                 </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td>No items added to the packing list</td>
+                </tr>
+                {% endif %}
             </table>
         </div>
         <div class="div-rightside">

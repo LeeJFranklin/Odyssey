@@ -51,7 +51,7 @@
     { "country": "Thailand", "city": "Bangkok", "coordinates": { "lat": 13.7525, "lon": 100.4935 } },
     { "country": "Turkey", "city": "Istanbul", "coordinates": { "lat": 41.0082, "lon": 28.9784 } },
     { "country": "Ukraine", "city": "Kiev", "coordinates": { "lat": 50.4501, "lon": 30.5236 } },
-    { "country": "United Arab Emirates", "city": "Dubai", "coordinates": { "lat": 25.276987, "lon": 55.296249 } },
+    { "country": "UAE", "city": "Dubai", "coordinates": { "lat": 25.276987, "lon": 55.296249 } },
     { "country": "Wales", "city": "Cardiff", "coordinates": { "lat": 51.4816, "lon": -3.1791 } },
     { "country": "Wales", "city": "Swansea", "coordinates": { "lat": 51.6214, "lon": -3.9436 } }
 ]

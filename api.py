@@ -4,7 +4,7 @@ from flask import jsonify, request
 
 def init_api_routes(app):
     # Photon API Geocode endpoint
-    @app.route("/api/geocode", methods=["GET"])
+    @app.route("/api/geocode", methods=["GET", "POST"])
     def geocode():
         location = request.args.get("location")
 
