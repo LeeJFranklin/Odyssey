@@ -6,7 +6,7 @@
 
 {% block content %}
 
-    <form action="/planner" method="post">
+    <form action="/planner/<int:trip_id>" method="post">
         {% for t in trip %}
         <h3>Trip to <span id="planner-location">{{ t.city }}, {{ t.country }}</span></h3>
         <hr>
@@ -16,7 +16,7 @@
                     <thead>
                         <tr>
                             <th>Details</th>
-                            <th><a href="#" onclick="loadEditForm()">Add/Edit</a></th>
+                            <th><a href="Edit" onclick="loadEditForm(`{{ t.id }}`)">Add/Edit</a></th>
                         </tr>
                     </thead>
                     <tbody>

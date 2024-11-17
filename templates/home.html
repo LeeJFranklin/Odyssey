@@ -27,10 +27,10 @@
                             Saved Trips
                         </th>
                     </tr>
-                    {% for city, country in locations %}
+                    {% for id, city, country in locations %}
                     <tr>
                         <td>
-                            <a href="/planner">Trip to {{ city }}, {{ country }}</a>
+                            <a href="/planner/{{ id }}">{{ id }}. Trip to {{ city }}, {{ country }}</a>
                         </td>
                     </tr>
                     {% endfor %}

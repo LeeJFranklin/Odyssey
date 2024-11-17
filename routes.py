@@ -46,7 +46,6 @@ def init_routes(app):
 
         return render_template("register.html")
 
-
     # Log in route
     @app.route("/login", methods=["GET", "POST"])
     def login():
@@ -109,9 +108,15 @@ def init_routes(app):
             # Commit the insert
             db.commit()
 
-            return redirect(url_for("planner"))
+            cursor.execute(
+                "SELECT id FROM trips WHERE user_id = ? ORDER BY id DESC LIMIT 1;",
+                (session["user_id"],)
+            )
 
-        
+            trip_id = cursor.fetchone()["id"]  # Fetch the id from the result
+
+            return redirect(url_for("planner", trip_id=trip_id))
+
         # Fetch the username for the logged-in user based on session user_id
         cursor.execute(
             "SELECT username FROM users WHERE id = ?;", (session["user_id"],)
@@ -124,7 +129,7 @@ def init_routes(app):
             
         # Fetch previously created trips
         cursor.execute(
-                "SELECT city, country FROM trips WHERE user_id = ?;", (session["user_id"],)
+                "SELECT id, city, country FROM trips WHERE user_id = ?;", (session["user_id"],)
             )
         locations = cursor.fetchall()
         
@@ -132,21 +137,59 @@ def init_routes(app):
         return render_template("home.html", username=user["username"], locations=locations)
 
     # Planner route
-    @app.route("/planner", methods=["GET", "POST"])
+    @app.route("/planner/<int:trip_id>", methods=["GET", "POST"])
     @login_required
-    def planner():
+    def planner(trip_id):
         db = get_db()
         db.row_factory = sqlite3.Row  # Enable dictionary-like row access
         cursor = db.cursor()
 
         # Fetch trip information
         cursor.execute(
-            "SELECT * FROM trips WHERE user_id = ?;", (session["user_id"],)
+            "SELECT * FROM trips WHERE user_id = ? AND id = ?;", (session["user_id"], trip_id)
         )
 
         trip = cursor.fetchall()
 
         return render_template("planner.html", trip=trip)
+
+    # TODO Update trip details route
+    @app.route("/update-trip", methods=["POST"])
+    def update_trip(trip_id):
+        data = request.json
+
+        # Extract fields
+        startdate = data.get("startdate")
+        enddate = data.get("enddate")
+        transport = data.get("transport")
+        accommodation = data.get("accommodation")
+        budget = data.get("budget")
+
+        try:
+            db = get_db()
+            db.row_factory = sqlite3.Row  # Enable dictionary-like row access
+            cursor = db.cursor()
+
+            # Update or insert into trips table
+            cursor.execute("""
+                INSERT INTO trips (startdate, enddate, transport, accommodation, budget)
+                VALUES (?, ?, ?, ?, ?)
+                WHERE (id, user_id)
+                VALUES (?, ?)
+                ON CONFLICT(id) DO UPDATE SET
+                    startdate=excluded.startdate,
+                    enddate=excluded.enddate,
+                    transport=excluded.transport,
+                    accommodation=excluded.accommodation,
+                    budget=excluded.budget
+            """, (startdate, enddate, transport, accommodation, budget))
+
+            db.commit()
+
+            return jsonify({'success': True, 'message': 'Trip details saved successfully!'})
+        except Exception as e:
+            return jsonify({'success': False, 'message': f'Error: {e}'}), 500
+
 
     # Home page explore section
     @app.route("/explore", methods=["GET", "POST"])
