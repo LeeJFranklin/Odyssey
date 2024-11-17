@@ -16,29 +16,29 @@
                     <thead>
                         <tr>
                             <th>Details</th>
-                            <th><a href="Edit" onclick="loadEditForm(`{{ t.id }}`)">Add/Edit</a></th>
+                            <th><a href="#" onclick="loadEditForm()">Add/Edit</a></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>Start Date</td>
-                            <td>{{ t.startdate if t.startdate else "Not provided" }}</td>
+                            <td>{{ t.startdate if t.startdate else "" }}</td>
                         </tr>
                         <tr>
                             <td>End Date</td>
-                            <td>{{ t.enddate if t.enddate else "Not provided" }}</td>
+                            <td>{{ t.enddate if t.enddate else "" }}</td>
                         </tr>
                         <tr>
                             <td>Transport Type</td>
-                            <td>{{ t.transport if t.transport else "Not provided" }}</td>
+                            <td>{{ t.transport if t.transport else "" }}</td>
                         </tr>
                         <tr>
                             <td>Accommodation</td>
-                            <td>{{ t.accommodation if t.accommodation else "Not provided" }}</td>
+                            <td>{{ t.accommodation if t.accommodation else "" }}</td>
                         </tr>
                         <tr>
                             <td>Budget</td>
-                            <td>{{ t.budget if t.budget else "Not provided" }}</td>
+                            <td>{{ t.budget if t.budget else "" }}</td>
                         </tr>
                     </tbody>
                 </table>

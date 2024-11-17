@@ -187,89 +187,51 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// Get the element
+const container = document.getElementById("editContainer");
 
+// Store the original HTML
+const originalHTML = container.innerHTML;
 
-
-// TODO
-function loadEditForm(trip_id) {
-    fetch(`/get-trip/${trip_id}`)
-        .then(response => response.json())
-        .then(data => {
-        const container = document.getElementById("editContainer");
-
-        // Fetch current details from the table
-        const currentDetails = {
-            startdate: "{{ t.startdate if t.startdate else '' }}",
-            enddate: "{{ t.enddate if t.enddate else '' }}",
-            transport: "{{ t.transport if t.transport else '' }}",
-            accommodation: "{{ t.accommodation if t.accommodation else '' }}",
-            budget: "{{ t.budget if t.budget else '' }}"
-        };
-
-        // Dynamically load the form into the container
-        container.innerHTML = `
-            <form id="editForm">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Details</th>
-                            <th><a href="#" onclick="submitEditForm({{ t.id }})">Save</a></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Start Date</td>
-                            <td><input type="date" id="startdate" name="startdate" value="${currentDetails.startdate}"></td>
-                        </tr>
-                        <tr>
-                            <td>End Date</td>
-                            <td><input type="date" id="enddate" name="enddate" value="${currentDetails.enddate}"></td>
-                        </tr>
-                        <tr>
-                            <td>Transport Type</td>
-                            <td><input type="text" id="transport" name="transport" value="${currentDetails.transport}"></td>
-                        </tr>
-                        <tr>
-                            <td>Accommodation</td>
-                            <td><input type="text" id="accommodation" name="accommodation" value="${currentDetails.accommodation}"></td>
-                        </tr>
-                        <tr>
-                            <td>Budget</td>
-                            <td><input type="text" id="budget" name="budget" value="${currentDetails.budget}"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </form>
-        `;
-    })
-    .catch(error => {
-        alert('Failed to load trip data: ' + error);
-    });
+function loadEditForm() {
+    // Dynamically load the form into the container
+    container.innerHTML = `
+        <form id="editForm">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Details</th>
+                        <th><a href="#" onclick="submitEditForm()">Save</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Start Date</td>
+                        <td><input type="date" id="startdate" name="startdate"></td>
+                    </tr>
+                    <tr>
+                        <td>End Date</td>
+                        <td><input type="date" id="enddate" name="enddate"></td>
+                    </tr>
+                    <tr>
+                        <td>Transport Type</td>
+                        <td><input type="text" id="transport" name="transport"></td>
+                    </tr>
+                    <tr>
+                        <td>Accommodation</td>
+                        <td><input type="text" id="accommodation" name="accommodation"></td>
+                    </tr>
+                    <tr>
+                        <td>Budget</td>
+                        <td><input type="text" id="budget" name="budget"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    `;
 }
 
-
-// TODO
-function submitEditForm(trip_id) {
-    const data = {
-        startdate: document.getElementById("startdate").value,
-        enddate: document.getElementById("enddate").value,
-        transport: document.getElementById("transport").value,
-        accommodation: document.getElementById("accommodation").value,
-        budget: document.getElementById("budget").value,
-    };
-
-    // Send the data to the server via fetch
-    fetch(`/update-trip/${trip_id}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .then(result => {
-        alert(result.message); // Notify the user
-        location.reload(); // Reload to show updated table
-    })
-    .catch(error => {
-        alert('Failed to save trip: ' + error);
-    });
+function submitEditForm() {
+    const container = document.getElementById("editContainer");
+    container.innerHTML = originalHTML;
 }
