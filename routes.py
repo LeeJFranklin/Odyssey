@@ -129,7 +129,7 @@ def init_routes(app):
             
         # Fetch previously created trips
         cursor.execute(
-                "SELECT id, city, country FROM trips WHERE user_id = ?;", (session["user_id"],)
+                "SELECT id, city, country FROM trips WHERE user_id = ? ORDER BY id ASC;", (session["user_id"],)
             )
         locations = cursor.fetchall()
         
@@ -151,44 +151,31 @@ def init_routes(app):
 
         trip = cursor.fetchall()
 
-        return render_template("planner.html", trip=trip)
+        if not trip:
+            # Handle case where trip is not found or unauthorized
+            flash("Trip not found or access denied.", "error")
+            return redirect(url_for("home"))  # Redirect to a safe route
 
-    # TODO Update trip details route
-    @app.route("/update-trip", methods=["POST"])
-    def update_trip(trip_id):
-        data = request.json
+        if request.method == "POST":
+            # Extract fields
+            startdate = request.form.get("startdate")
+            enddate = request.form.get("enddate")
+            transport = request.form.get("transport")
+            accommodation = request.form.get("accommodation")
+            budget = request.form.get("budget")
 
-        # Extract fields
-        startdate = data.get("startdate")
-        enddate = data.get("enddate")
-        transport = data.get("transport")
-        accommodation = data.get("accommodation")
-        budget = data.get("budget")
-
-        try:
-            db = get_db()
-            db.row_factory = sqlite3.Row  # Enable dictionary-like row access
-            cursor = db.cursor()
-
-            # Update or insert into trips table
-            cursor.execute("""
-                INSERT INTO trips (startdate, enddate, transport, accommodation, budget)
-                VALUES (?, ?, ?, ?, ?)
-                WHERE (id, user_id)
-                VALUES (?, ?)
-                ON CONFLICT(id) DO UPDATE SET
-                    startdate=excluded.startdate,
-                    enddate=excluded.enddate,
-                    transport=excluded.transport,
-                    accommodation=excluded.accommodation,
-                    budget=excluded.budget
-            """, (startdate, enddate, transport, accommodation, budget))
+            # Update data into trips table
+            cursor.execute(
+                "UPDATE trips SET startdate = ?, enddate = ?, transport = ?, accommodation = ?, budget = ? WHERE id = ? AND user_id = ?;", 
+                (startdate, enddate, transport, accommodation, budget, trip_id, session["user_id"])
+            )
 
             db.commit()
 
-            return jsonify({'success': True, 'message': 'Trip details saved successfully!'})
-        except Exception as e:
-            return jsonify({'success': False, 'message': f'Error: {e}'}), 500
+            flash("Trip updated successfully!", "success")
+            return redirect(url_for("planner", trip_id=trip_id))
+
+        return render_template("planner.html", trip=trip)
 
 
     # Home page explore section

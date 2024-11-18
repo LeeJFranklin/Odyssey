@@ -189,19 +189,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Get the element
 const container = document.getElementById("editContainer");
-
 // Store the original HTML
 const originalHTML = container.innerHTML;
+// Dynamically get the Trip ID from each page using the hidden <span>
+const tripId = document.getElementById("trip-id").textContent
 
 function loadEditForm() {
     // Dynamically load the form into the container
     container.innerHTML = `
-        <form id="editForm">
             <table>
                 <thead>
                     <tr>
                         <th>Details</th>
-                        <th><a href="#" onclick="submitEditForm()">Save</a></th>
+                        <th><button id="save-button" class="submit-btn">Save</button></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -227,11 +227,13 @@ function loadEditForm() {
                     </tr>
                 </tbody>
             </table>
-        </form>
     `;
 }
 
-function submitEditForm() {
-    const container = document.getElementById("editContainer");
-    container.innerHTML = originalHTML;
-}
+document.getElementById("save-button").onclick = async function (event) {
+
+    await fetch(`/planner/${tripId}`, {
+        method: "POST",
+        body: FormData(container),
+    });
+};
