@@ -16,7 +16,7 @@
                     <thead>
                         <tr>
                             <th>Details</th>
-                            <th><button class="submit-btn" onclick="loadEditForm()">Add/Edit</button></th>
+                            <th><button type="button" class="submit-btn" onclick="loadEditForm()">Add/Edit</button></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,13 +44,15 @@
                 </table>
             </div>
         </div>
-        {% endfor %}
         <div class="div-rightside">
             <div id="planning-map">
                 <div id="map"></div>
             </div>
         </div>
         <hr>
+    </form>
+    {% endfor %}
+    <form action="/itinerary" method="post">
         <h3>Itinerary</h3>
         <div>
             <table>
@@ -62,41 +64,79 @@
                         Time
                     </th>
                     <th>
-                        Activity
+                        Information
                     </th>
+                    <th>
+                        Cost
+                    </th>
+                {% for i in itinerary %}
                 </tr>
-                {% for activity in activities %}
-                    <tr>
-                        <td>{{ activity.date }}</td>
-                        <td>{{ activity.time }}</td>
-                        <td>{{ activity.description }}</td>
-                    </tr>
+                    <td>{{ i.date }}</td>
+                    <td>{{ i.time }}</td>
+                    <td>{{ i.info }}</td>
+                    <td>{{ i.cost }}</td>
+                </tr>
                 {% endfor %}
+                <tr>
+                    <td>
+                        <input type="date" id="itinerary-date" class="input-field" name="itinerary-date">
+                    </td>
+                    <td>
+                        <input type="time" id="itinerary-time" class="input-field" name="itinerary-time">
+                    </td>
+                    <td>
+                        <input type="text" id="itinerary-info" class="input-field" name="itinerary-info">
+                    </td>
+                    <td>
+                        <input type="number" id="itinerary-cost" class="input-field" name="itinerary-cost"> 
+                    </td>
                 </tr>
             </table>
+            <button type="submit" id="itinerary-submit" class="submit-btn">Add</button>
         </div>
+    </form>
+
+    <form action="/packing_list" method="post">
         <hr>    
         <div class="div-leftside">
+            <h3>Packing List</h3>
             <table>
                 <tr>
-                    <th>Packing List</th>
+                    <th>Item</th>
+                    <th>Amount</th>
+                    <th>Packed</th>
                 </tr>
                 {% if packing_list %}
                 {% for item in packing_list %}
                 <tr>
-                    <td>{{ item }}</td>
+                    <td>{{ item.item }}</td>
+                    <td>{{ item.amount }}</td>
+                    <td>{{ item.packed }}</td>
                 </tr>
                 {% endfor %}
                 {% else %}
                 <tr>
                     <td>No items added to the packing list</td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 {% endif %}
+                <tr>
+                    <td>
+                        <input type="text" id="packing-item" class="input-field" name="packing-item">
+                    </td>
+                    <td>
+                        <input type="number" id="packing-amount" class="input-field" name="packing-amount">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="packing-bool" class="input-field" name="packing-bool">
+                    </td>
+                </tr>
             </table>
+            <button type="submit" id="packing-submit" class="submit-btn">Add</button> 
         </div>
         <div class="div-rightside">
             <h3>Usful Information</h3>
         </div>        
     </form>
-
 {% endblock %}

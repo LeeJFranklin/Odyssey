@@ -2,6 +2,7 @@ import sqlite3
 
 from flask import jsonify, render_template, request, session, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import date
 
 from utils import get_db, info_scraper, login_required
 
@@ -144,6 +145,8 @@ def init_routes(app):
         db.row_factory = sqlite3.Row  # Enable dictionary-like row access
         cursor = db.cursor()
 
+        today = date.today().strftime('%Y-%m-%d')  # Format date as YYYY-MM-DD
+
         # Fetch trip information
         cursor.execute(
             "SELECT * FROM trips WHERE user_id = ? AND id = ?;", (session["user_id"], trip_id)
@@ -172,11 +175,43 @@ def init_routes(app):
 
             db.commit()
 
-            flash("Trip updated successfully!", "success")
-            return redirect(url_for("planner", trip_id=trip_id))
+            return redirect(url_for("planner", trip_id=trip_id, min_date=today))
 
         return render_template("planner.html", trip=trip)
+    
+    # Planner page itinerary section
+    @app.route("/itinerary", methods=["GET", "POST"])
+    @login_required
+    def itinerary(trip_id):
+        db = get_db()
+        db.row_factory = sqlite3.Row  # Enable dictionary-like row access
+        cursor = db.cursor()
 
+        cursor.execute(
+            "SELECT * FROM itinerary WHERE trip_id = ? AND user_id = ?;",
+            (trip_id, session["user_id"])
+        )
+
+        itinerary = cursor.fetchall()
+
+        if request.method == "POST":
+            # Extract fields fro the form
+            itinerary_date = request.form.get("itinerary-date")
+            itinerary_time = request.form.get("itinerary-time")
+            itinerary_info = request.form.get("itinerary-info")
+            itinerary_cost = request.form.get("itinerary-cost")
+
+            # Enter entry into the itinerary table
+            cursor.execute(
+                "INSERT INTO itinerary (trip_id, user_id, entry_date, entry_time, entry_info, entry_cost) VALUES (?, ?, ?, ?, ?, ?);",
+                (trip_id, session["user_id"], itinerary_date, itinerary_time, itinerary_info, itinerary_cost)
+            )
+
+            db.commit()
+
+            return redirect(url_for("planner", trip_id=trip_id))
+
+        return render_template("planner.html", itinerary=itinerary)
 
     # Home page explore section
     @app.route("/explore", methods=["GET", "POST"])

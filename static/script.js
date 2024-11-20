@@ -229,11 +229,3 @@ function loadEditForm() {
             </table>
     `;
 }
-
-document.getElementById("save-button").onclick = async function (event) {
-
-    await fetch(`/planner/${tripId}`, {
-        method: "POST",
-        body: FormData(container),
-    });
-};
