@@ -189,8 +189,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Get the element
 const container = document.getElementById("editContainer");
-// Store the original HTML
-const originalHTML = container.innerHTML;
 // Dynamically get the Trip ID from each page using the hidden <span>
 const tripId = document.getElementById("trip-id").textContent
 

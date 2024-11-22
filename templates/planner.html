@@ -51,8 +51,7 @@
         </div>
         <hr>
     </form>
-    {% endfor %}
-    <form action="/itinerary" method="post">
+    <form action="/itinerary/{{ t.id }}" method="post">
         <h3>Itinerary</h3>
         <div>
             <table>
@@ -71,10 +70,10 @@
                     </th>
                 {% for i in itinerary %}
                 </tr>
-                    <td>{{ i.date }}</td>
-                    <td>{{ i.time }}</td>
-                    <td>{{ i.info }}</td>
-                    <td>{{ i.cost }}</td>
+                    <td>{{ i.entry_date }}</td>
+                    <td>{{ i.entry_time }}</td>
+                    <td>{{ i.entry_info }}</td>
+                    <td>{{ i.entry_cost }}</td>
                 </tr>
                 {% endfor %}
                 <tr>
@@ -96,7 +95,7 @@
         </div>
     </form>
 
-    <form action="/packing_list" method="post">
+    <form action="/packing_list/{{ t.id }}" method="post">
         <hr>    
         <div class="div-leftside">
             <h3>Packing List</h3>
@@ -104,14 +103,14 @@
                 <tr>
                     <th>Item</th>
                     <th>Amount</th>
-                    <th>Packed</th>
+                    <th>Packed?</th>
                 </tr>
                 {% if packing_list %}
                 {% for item in packing_list %}
                 <tr>
                     <td>{{ item.item }}</td>
                     <td>{{ item.amount }}</td>
-                    <td>{{ item.packed }}</td>
+                    <td>{{ item.packed if item.packed else "" }}</td>
                 </tr>
                 {% endfor %}
                 {% else %}
@@ -129,7 +128,7 @@
                         <input type="number" id="packing-amount" class="input-field" name="packing-amount">
                     </td>
                     <td>
-                        <input type="checkbox" id="packing-bool" class="input-field" name="packing-bool">
+                        <input type="text" id="packing-bool" class="input-field" name="packing-packed">
                     </td>
                 </tr>
             </table>
@@ -139,4 +138,5 @@
             <h3>Usful Information</h3>
         </div>        
     </form>
+    {% endfor %}
 {% endblock %}

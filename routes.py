@@ -158,6 +158,20 @@ def init_routes(app):
             # Handle case where trip is not found or unauthorized
             flash("Trip not found or access denied.", "error")
             return redirect(url_for("home"))  # Redirect to a safe route
+        
+        cursor.execute(
+            "SELECT * FROM itinerary WHERE trip_id = ? AND user_id = ? ORDER BY entry_date ASC, entry_time ASC;",
+            (trip_id, session["user_id"])
+        )
+
+        itinerary = cursor.fetchall()
+
+        cursor.execute(
+            "SELECT * FROM packing_list WHERE trip_id = ? AND user_id = ?;",
+            (trip_id, session["user_id"])
+        )
+
+        packing_list = cursor.fetchall()
 
         if request.method == "POST":
             # Extract fields
@@ -177,25 +191,18 @@ def init_routes(app):
 
             return redirect(url_for("planner", trip_id=trip_id, min_date=today))
 
-        return render_template("planner.html", trip=trip)
+        return render_template("planner.html", trip=trip, itinerary=itinerary, packing_list=packing_list)
     
     # Planner page itinerary section
-    @app.route("/itinerary", methods=["GET", "POST"])
+    @app.route("/itinerary/<int:trip_id>", methods=["GET", "POST"])
     @login_required
     def itinerary(trip_id):
         db = get_db()
         db.row_factory = sqlite3.Row  # Enable dictionary-like row access
         cursor = db.cursor()
 
-        cursor.execute(
-            "SELECT * FROM itinerary WHERE trip_id = ? AND user_id = ?;",
-            (trip_id, session["user_id"])
-        )
-
-        itinerary = cursor.fetchall()
-
         if request.method == "POST":
-            # Extract fields fro the form
+            # Extract fields from the form
             itinerary_date = request.form.get("itinerary-date")
             itinerary_time = request.form.get("itinerary-time")
             itinerary_info = request.form.get("itinerary-info")
@@ -211,7 +218,33 @@ def init_routes(app):
 
             return redirect(url_for("planner", trip_id=trip_id))
 
-        return render_template("planner.html", itinerary=itinerary)
+        return render_template("planner.html")
+    
+    # Planner page packing_list section
+    @app.route("/packing_list/<int:trip_id>", methods=["GET", "POST"])
+    @login_required
+    def packing_list(trip_id):
+        db = get_db()
+        db.row_factory = sqlite3.Row  # Enable dictionary-like row access
+        cursor = db.cursor()
+
+        if request.method == "POST":
+            # Extract fields from the form
+            item = request.form.get("packing-item")
+            amount = request.form.get("packing-amount")
+            packed = request.form.get("packing-packed")
+
+            # Enter entry into the packing_list table
+            cursor.execute(
+                "INSERT INTO packing_list (trip_id, user_id, item, amount, packed) VALUES (?, ?, ?, ?, ?);",
+                (trip_id, session["user_id"], item, amount, packed)
+            )
+
+            db.commit()
+
+            return redirect(url_for("planner", trip_id=trip_id))
+
+        return render_template("planner.html")
 
     # Home page explore section
     @app.route("/explore", methods=["GET", "POST"])
