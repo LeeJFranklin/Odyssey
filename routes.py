@@ -161,7 +161,6 @@ def init_routes(app):
             "SELECT * FROM itinerary WHERE trip_id = ? AND user_id = ? ORDER BY entry_date ASC, entry_time ASC;",
             (trip_id, session["user_id"])
         )
-
         itinerary = cursor.fetchall()
 
         cursor.execute(
@@ -223,26 +222,41 @@ def init_routes(app):
 
         return render_template("planner.html")
     
-    # Delete itinerary entry route
     @app.route("/delete_itinerary_entry/<int:entry_id>", methods=["POST"])
     @login_required
     def delete_itinerary_entry(entry_id):
         db = get_db()
-        db.row_factory = sqlite3.Row  # Enable dictionary-like row access
         cursor = db.cursor()
 
-        trip_id = request.form.get("hidden-trip-id")
+        # Retrieve trip_id from the form
+        trip_id = request.form.get("delete-entry-value")
 
-        if request.method == "POST":
-            # Delete from the itinerary table
-            cursor.execute(
-                "DELETE FROM itinerary WHERE id = ? AND trip_id = ? AND user_id = ?;", (entry_id, trip_id, session["user_id"])
-            )
-            db.commit()
+        if not trip_id:
+            flash("Trip ID is missing. Cannot delete entry.", "error")
+            return redirect(url_for("home"))
 
+        # Ensure the entry belongs to the user and is part of the specified trip
+        cursor.execute(
+            "SELECT * FROM itinerary WHERE id = ? AND trip_id = ? AND user_id = ?;",
+            (entry_id, trip_id, session["user_id"])
+        )
+        entry = cursor.fetchone()
+
+        if not entry:
+            flash("Entry not found or you don't have permission to delete it.", "error")
             return redirect(url_for("planner", trip_id=trip_id))
-        
-        return render_template("planner.html")
+
+        # Delete the entry
+        cursor.execute(
+            "DELETE FROM itinerary WHERE id = ? AND trip_id = ? AND user_id = ?;",
+            (entry_id, trip_id, session["user_id"])
+        )
+        db.commit()
+
+        flash("Entry deleted successfully.", "success")
+        return redirect(url_for("planner", trip_id=trip_id))
+
+
     
     # Planner page packing_list section
     @app.route("/packing_list/<int:trip_id>", methods=["GET", "POST"])

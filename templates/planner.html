@@ -51,7 +51,7 @@
         </div>
         <hr>
     </form>
-    <form action="/itinerary/{{ t.id }}" method="post">
+    
         <h3>Itinerary</h3>
         <div>
             <table>
@@ -78,9 +78,9 @@
                     <td>{{ i.entry_info }}</td>
                     <td>{{ i.entry_cost }}</td>
                     <td>
-                        <form action="/delete_itinerary_entry/{{ i.id }}" method="post">
-                            <input type="hidden" id="hidden-trip-id" name="hidden-trip-id" value="{{ i.trip_id }}">
-                            <button type="submit" class="submit-btn" id="delete-entry" name="delete-entry">Delete entry</button>
+                        <form action="/delete_itinerary_entry/{{ i.id }}" method="POST">
+                            <input type="hidden" name="delete-entry-value" value="{{ i.trip_id }}">
+                            <button type="submit" class="submit-btn" id="delete-entry-btn">Delete entry</button>
                         </form>
                     </td>
                 </tr>
@@ -90,26 +90,28 @@
                     <td colspan="5">No itinerary set for this trip</td>
                 </tr>
                 {% endif %}
-                <tr>
-                    <td>
-                        <input type="date" id="itinerary-date" class="input-field" name="itinerary-date">
-                    </td>
-                    <td>
-                        <input type="time" id="itinerary-time" class="input-field" name="itinerary-time">
-                    </td>
-                    <td>
-                        <input type="text" id="itinerary-info" class="input-field" name="itinerary-info">
-                    </td>
-                    <td>
-                        <input type="number" id="itinerary-cost" class="input-field" name="itinerary-cost"> 
-                    </td>
-                    <td>
-                        <button type="submit" id="itinerary-submit" class="submit-btn">Add</button>
-                    </td>
-                </tr>
+                <form action="/itinerary/{{ t.id }}" method="post">
+                    <tr>
+                        <td>
+                            <input type="date" id="itinerary-date" class="input-field" name="itinerary-date">
+                        </td>
+                        <td>
+                            <input type="time" id="itinerary-time" class="input-field" name="itinerary-time">
+                        </td>
+                        <td>
+                            <input type="text" id="itinerary-info" class="input-field" name="itinerary-info">
+                        </td>
+                        <td>
+                            <input type="number" id="itinerary-cost" class="input-field" name="itinerary-cost"> 
+                        </td>
+                        <td>
+                            <button type="submit" id="itinerary-submit" class="submit-btn">Add</button>
+                        </td>
+                    </tr>
+                </form>
             </table>
         </div>
-    </form>
+    
 
     <form action="/packing_list/{{ t.id }}" method="post">
         <hr>    
