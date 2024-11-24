@@ -206,16 +206,42 @@ def init_routes(app):
             itinerary_info = request.form.get("itinerary-info")
             itinerary_cost = request.form.get("itinerary-cost")
 
-            # Enter entry into the itinerary table
-            cursor.execute(
-                "INSERT INTO itinerary (trip_id, user_id, entry_date, entry_time, entry_info, entry_cost) VALUES (?, ?, ?, ?, ?, ?);",
-                (trip_id, session["user_id"], itinerary_date, itinerary_time, itinerary_info, itinerary_cost)
-            )
+            # Check if these fields are blank (e.g., triggered by the delete button)
+            if not itinerary_date and not itinerary_time and not itinerary_info and not itinerary_cost:
+                # Likely a misrouted delete form submission; ignore this POST
+                flash("Invalid entry data. Action ignored.", "error")
+            else:
+                # Enter entry into the itinerary table
+                cursor.execute(
+                    "INSERT INTO itinerary (trip_id, user_id, entry_date, entry_time, entry_info, entry_cost) VALUES (?, ?, ?, ?, ?, ?);",
+                    (trip_id, session["user_id"], itinerary_date, itinerary_time, itinerary_info, itinerary_cost)
+                )
 
+                db.commit()
+
+                return redirect(url_for("planner", trip_id=trip_id))
+
+        return render_template("planner.html")
+    
+    # Delete itinerary entry route
+    @app.route("/delete_itinerary_entry/<int:entry_id>", methods=["POST"])
+    @login_required
+    def delete_itinerary_entry(entry_id):
+        db = get_db()
+        db.row_factory = sqlite3.Row  # Enable dictionary-like row access
+        cursor = db.cursor()
+
+        trip_id = request.form.get("hidden-trip-id")
+
+        if request.method == "POST":
+            # Delete from the itinerary table
+            cursor.execute(
+                "DELETE FROM itinerary WHERE id = ? AND trip_id = ? AND user_id = ?;", (entry_id, trip_id, session["user_id"])
+            )
             db.commit()
 
             return redirect(url_for("planner", trip_id=trip_id))
-
+        
         return render_template("planner.html")
     
     # Planner page packing_list section
