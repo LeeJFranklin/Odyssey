@@ -147,6 +147,16 @@ label {
     font-family: monospace;
 }
 
+.red-submit-btn {
+    background-color: #FF0000;
+    color: #FFFFFF;
+    border: none;
+    margin-top: 15px;
+    padding: 9px;
+    border-radius: 6px;
+    font-family: monospace;
+}
+
 .surprise-btn {
     background-color: #bb7d00;
     color: #FFFFFF;

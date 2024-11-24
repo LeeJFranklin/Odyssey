@@ -1,28 +1,28 @@
-// Registering validation
-document.querySelector("form").addEventListener("submit", function(event) {
+// Function for checking if username is valid
+const usernameIsValid = (username) => {
+    return /^[^\s]+$/.test(username);
+};
+    
+// Function for checking if email address is valid
+const emailIsValid = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
+
+// Function for checking if password is valid, conatining
+// 8+ characters with 1 uppercase, 1 lowercase, 1 number, and 1 special character
+const passwordIsValid = (password) => {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(password);
+};
+
+// Registration form validation
+document.getElementById("register-form")?.addEventListener("submit", function(event) {
     const registerUsername = document.getElementById("register-username");
     const registerEmail = document.getElementById("register-email")
     const registerPass = document.getElementById("register-password");
     const confirmRegisterPass = document.getElementById("confirm-register-password")
     const errorMsg = document.getElementById("register-error")
 
-    // Function for checking if username is valid
-    const usernameIsValid = (username) => {
-        return /^[^\s]+$/.test(username);
-    };
-    
-    // Function for checking if email address is valid
-    const emailIsValid = (email) => {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    };
-
-    // Function for checking if password is valid, conatining
-    // 8+ characters with 1 uppercase, 1 lowercase, 1 number, and 1 special character
-    const passwordIsValid = (password) => {
-        return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(password);
-    };
-
-    // Clear previous error message
+    // Clear previous error messages
     errorMsg.innerHTML = "";
 
     // Prevent submission if there are validation errors
@@ -31,21 +31,44 @@ document.querySelector("form").addEventListener("submit", function(event) {
     if (registerUsername.value === "") {
         errorMsg.innerHTML = "Please choose a Username";
         validationError = true;
-    }
-    else if (!usernameIsValid(registerUsername.value)) {
+    } else if (!usernameIsValid(registerUsername.value)) {
         errorMsg.innerHTML = "Username must not contain spaces";
         validationError = true;
-    }
-    else if (!emailIsValid(registerEmail.value)) {
+    } else if (!emailIsValid(registerEmail.value)) {
         errorMsg.innerHTML = "Please enter a valid email address";
         validationError = true;
-    }
-    else if (!passwordIsValid(registerPass.value)) {
+    } else if (!passwordIsValid(registerPass.value)) {
         errorMsg.innerHTML = "Password must be 8+ characters with 1 uppercase, 1 lowercase, 1 number, and 1 special character";
         validationError = true;
-    }
-    else if (confirmRegisterPass.value != registerPass.value) {
+    } else if (confirmRegisterPass.value != registerPass.value) {
         errorMsg.innerHTML = "Passwords do not match";
+        validationError = true;
+    };
+
+    // Prevent form submission if there were any validation errors
+    if (validationError) {
+        event.preventDefault();
+    }
+});
+    
+document.getElementById("change-password-form")?.addEventListener("submit", function(event) {
+    const currentPassword = document.getElementById("current-password");
+    const newPassword = document.getElementById("new-password");
+    const confirmNewPassword = document.getElementById("confirm-new-password");
+    const changePasswordError = document.getElementById("change-password-error")
+
+    // Clear previous error messages
+    changePasswordError.innerHTML = "";
+
+    // Changing password validation
+    if (currentPassword.value === "") {
+        changePasswordError.innerHTML = "Please input your current password";
+        validationError = true;
+    } else if (!passwordIsValid(newPassword.value)) {
+        changePasswordError.innerHTML = "Password must be 8+ characters with 1 uppercase, 1 lowercase, 1 number, and 1 special character";
+        validationError = true;
+    } else if (newPassword.value != confirmNewPassword.value) {
+        changePasswordError.innerHTML = "Passwords do not match";
         validationError = true;
     }
 
@@ -55,13 +78,13 @@ document.querySelector("form").addEventListener("submit", function(event) {
     }
 });
 
-// Validation for entering a destination for a trip
-document.querySelector("form").addEventListener("submit", function(event) {
+// Trip planning input validation
+document.getElementById("planner-form")?.addEventListener("submit", function(event) {
     const city = document.getElementById("city-input");
     const country = document.getElementById("country-input");
     const planningErrorMsg = document.getElementById("planning-error");
 
-    // Clear previous error message
+    // Clear previous error messages
     planningErrorMsg.innerHTML = "";
 
     // Prevent submission if there are validation errors
@@ -70,12 +93,10 @@ document.querySelector("form").addEventListener("submit", function(event) {
     if (city.value === "") {
         planningErrorMsg.innerHTML = "Please choose a city";
         validationError = true;
-    }
-
-    else if (country.value === "") {
+    } else if (country.value === "") {
         planningErrorMsg.innerHTML = "Please choose a country";
         validationError = true;
-    }
+    };
 
     // Prevent form submission if there were any validation errors
     if (validationError) {
@@ -226,4 +247,16 @@ function loadEditForm() {
                 </tbody>
             </table>
     `;
-}
+};
+
+function deleteAccount() {
+    const deleteAccountForm = document.getElementById("delete-account-form");
+    // Dynamically load delete account HTML
+    deleteAccountForm.innerHTML = `
+        <h3>DELETE ACCOUNT</h3>
+        <p id="delete-error"></p>
+        <input class="input-field" type="password" id="delete-account-password" name="delete-account-password" placeholder="Password">
+        <input class="input-field" type="password" id="delete-account-confirm-password" name="delete-account-confirm-password" placeholder="Confirm Password">
+        <button type="submit" class="red-submit-btn" id="delete-account-btn" name="delete-account-btn">DELETE ACCOUNT</button>
+    `;
+};

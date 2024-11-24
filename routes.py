@@ -105,7 +105,6 @@ def init_routes(app):
                 "INSERT INTO trips (user_id, city, country) VALUES (?, ?, ?);",
                 (session["user_id"], city.strip(), country.strip())
             )
-
             # Commit the insert
             db.commit()
 
@@ -113,7 +112,6 @@ def init_routes(app):
                 "SELECT id FROM trips WHERE user_id = ? ORDER BY id DESC LIMIT 1;",
                 (session["user_id"],)
             )
-
             trip_id = cursor.fetchone()["id"]  # Fetch the id from the result
 
             return redirect(url_for("planner", trip_id=trip_id))
@@ -245,6 +243,23 @@ def init_routes(app):
             return redirect(url_for("planner", trip_id=trip_id))
 
         return render_template("planner.html")
+    
+    # Planner page delete trip route
+    @app.route("/delete_trip/<int:trip_id>", methods=["POST"])
+    @login_required
+    def delete_trip(trip_id):
+        db = get_db()
+        db.row_factory = sqlite3.Row  # Enable dictionary-like row access
+        cursor = db.cursor()
+
+        if request.method == "POST":
+            cursor.execute(
+                "DELETE FROM trips WHERE id = ? AND user_id = ?;", (trip_id, session["user_id"])
+            )
+            db.commit()
+
+            return redirect(url_for("home"))
+
 
     # Home page explore section
     @app.route("/explore", methods=["GET", "POST"])
@@ -274,10 +289,56 @@ def init_routes(app):
 
 
     # Settings route
-    @app.route("/settings")
+    @app.route("/settings", methods=["GET", "POST"])
     @login_required
-    def favourites():
-        #TODO create settings section
+    def settings():
+        
+        if request.method == "POST":
+            db = get_db()
+            db.row_factory = sqlite3.Row  # Enable dictionary-like row access
+            cursor = db.cursor()
+
+            password = request.form.get("current-password")
+            new_password = request.form.get("new-password")
+            confirm_password = request.form.get("confirm-password")
+
+            cursor.execute(
+                "SELECT password_hash FROM users WHERE id = ?;", (session["user_id"],)
+            )
+            user = cursor.fetchone()
+
+            if not check_password_hash(user["password_hash"], password):
+                flash("Password is incorrect", "error")
+                return redirect(url_for("login"))
+            elif new_password != confirm_password:
+                flash("Passwords do not match", "error")
+                return redirect(url_for("login"))
+            else:
+                cursor.execute(
+                    "UPDATE users SET password_hash = ? WHERE id = ?;", (generate_password_hash(new_password), session["user_id"])
+                )
+                db.commit()
+                
+                return redirect(url_for("home"))
+
+        return render_template("settings.html")
+    
+    # Delete account route
+    @app.route("/delete_account", methods=["GET", "POST"])
+    @login_required
+    def delete_account():
+        if request.method == "POST":
+            db = get_db()
+            db.row_factory = sqlite3.Row  # Enable dictionary-like row access
+            cursor = db.cursor()
+
+            cursor.execute(
+                "DELETE FROM users WHERE id = ?;", (session["user_id"],)
+            )
+            db.commit()
+            session.clear()
+            return redirect("/")
+        
         return render_template("settings.html")
 
     # Log out route
@@ -285,5 +346,5 @@ def init_routes(app):
     @login_required
     def logout():
         session.clear()
-        #Logs user out to the home page
+        # Logs user out to the home page
         return redirect("/")

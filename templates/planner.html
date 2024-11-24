@@ -136,7 +136,13 @@
         </div>
         <div class="div-rightside">
             <h3>Usful Information</h3>
+
         </div>        
+    </form>
+    <hr>
+    <form action="/delete_trip/{{ t.id }}" method="post">
+        <input hidden>
+        <button type="submit" id="delete-trip" class="red-submit-btn">Delete this trip</button>
     </form>
     {% endfor %}
 {% endblock %}

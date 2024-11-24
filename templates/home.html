@@ -7,7 +7,7 @@
 {% block content %}
 
     <!-- Home Form -->
-    <form action="/home" method="post">
+    <form id="planner-form" action="/home" method="post">
         <div class="template-div">
             <div class="header">
                 <h3>Welcome, {{ username }}!</h3>
@@ -27,13 +27,21 @@
                             Saved Trips
                         </th>
                     </tr>
+                    {% if locations %}
                     {% for id, city, country in locations %}
                     <tr>
                         <td>
-                            <a href="/planner/{{ id }}">{{ id }}. Trip to {{ city }}, {{ country }}</a>
+                            <a href="/planner/{{ id }}"><span hidden>{{ id }}</span>Trip to {{ city }}, {{ country }}</a>
                         </td>
                     </tr>
                     {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td>
+                            You have no saved trips
+                        </td>
+                    </tr>
+                    {% endif %}
                 </table>
             </div>
         </div>
