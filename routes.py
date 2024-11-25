@@ -135,6 +135,34 @@ def init_routes(app):
         # Pass the username and locations to the template
         return render_template("home.html", username=user["username"], locations=locations)
 
+    # Suprise location planning route
+    @app.route("/plan_trip_here", methods=["GET", "POST"])
+    @login_required
+    def plan_trip_here():
+        
+        db = get_db()
+        db.row_factory = sqlite3.Row  # Enable dictionary-like row access
+        cursor = db.cursor()
+
+        if request.method == "POST":
+            city = request.form.get("hidden-city-input")
+            country = request.form.get("hidden-country-input")
+
+            cursor.execute(
+                "INSERT INTO trips (user_id, city, country) VALUES (?, ?, ?);",
+                (session["user_id"], city.strip(), country.strip())
+            )
+            # Commit the insert
+            db.commit()
+
+            cursor.execute(
+                "SELECT id FROM trips WHERE user_id = ? ORDER BY id DESC LIMIT 1;",
+                (session["user_id"],)
+            )
+            trip_id = cursor.fetchone()["id"]  # Fetch the id from the result
+
+            return redirect(url_for("planner", trip_id=trip_id))
+
     # Planner route
     @app.route("/planner/<int:trip_id>", methods=["GET", "POST"])
     @login_required

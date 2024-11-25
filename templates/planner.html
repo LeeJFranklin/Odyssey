@@ -51,7 +51,6 @@
         </div>
         <hr>
     </form>
-    
         <h3>Itinerary</h3>
         <div>
             <table>
@@ -65,10 +64,9 @@
                     <th>
                         Information
                     </th>
-                    <th>
+                    <th colspan="2">
                         Cost
                     </th>
-                    <th></th>
                     {% if itinerary is not none and itinerary|length > 0 %}
                     {% for i in itinerary %}
                 </tr>
@@ -80,7 +78,7 @@
                     <td>
                         <form action="/delete_itinerary_entry/{{ i.id }}" method="POST">
                             <input type="hidden" name="delete-entry-value" value="{{ i.trip_id }}">
-                            <button type="submit" class="submit-btn" id="delete-entry-btn">Delete entry</button>
+                            <button type="submit" class="table-submit-btn" id="delete-entry-btn">Delete entry</button>
                         </form>
                     </td>
                 </tr>
@@ -93,27 +91,24 @@
                 <form action="/itinerary/{{ t.id }}" method="post">
                     <tr>
                         <td>
-                            <input type="date" id="itinerary-date" class="input-field" name="itinerary-date">
+                            <input type="date" id="itinerary-date" class="table-input-field" name="itinerary-date">
                         </td>
                         <td>
-                            <input type="time" id="itinerary-time" class="input-field" name="itinerary-time">
+                            <input type="time" id="itinerary-time" class="table-input-field" name="itinerary-time">
                         </td>
                         <td>
-                            <input type="text" id="itinerary-info" class="input-field" name="itinerary-info">
+                            <input type="text" id="itinerary-info" class="table-input-field" name="itinerary-info">
                         </td>
                         <td>
-                            <input type="number" id="itinerary-cost" class="input-field" name="itinerary-cost"> 
+                            <input type="number" id="itinerary-cost" class="table-input-field-small" name="itinerary-cost"> 
                         </td>
                         <td>
-                            <button type="submit" id="itinerary-submit" class="submit-btn">Add</button>
+                            <button type="submit" id="itinerary-submit" class="table-submit-btn">Add</button>
                         </td>
                     </tr>
                 </form>
             </table>
         </div>
-    
-
-    <form action="/packing_list/{{ t.id }}" method="post">
         <hr>    
         <div class="div-leftside">
             <h3>Packing List</h3>
@@ -121,7 +116,7 @@
                 <tr>
                     <th>Item</th>
                     <th>Amount</th>
-                    <th>Packed?</th>
+                    <th colspan="2">Packed?</th>
                 </tr>
                 {% if packing_list %}
                 {% for item in packing_list %}
@@ -129,32 +124,41 @@
                     <td>{{ item.item }}</td>
                     <td>{{ item.amount }}</td>
                     <td>{{ item.packed if item.packed else "" }}</td>
+                    <td>
+                        <form action="/delete_packing_entry/{{ item.id }}" method="POST">
+                            <input type="hidden" name="delete-packing-entry-value" value="{{ item.trip_id }}">
+                            <button type="submit" class="table-submit-btn" id="delete-packing-entry-btn">Delete</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
                 {% else %}
                 <tr>
-                    <td colspan="3">No items added to the packing list</td>
+                    <td colspan="4">No items added to the packing list</td>
                 </tr>
                 {% endif %}
+                <form action="/packing_list/{{ t.id }}" method="post">
                 <tr>
                     <td>
-                        <input type="text" id="packing-item" class="input-field" name="packing-item">
+                        <input type="text" id="packing-item" class="table-input-field" name="packing-item">
                     </td>
                     <td>
-                        <input type="number" id="packing-amount" class="input-field" name="packing-amount">
+                        <input type="number" id="packing-amount" class="table-input-field-small" name="packing-amount">
                     </td>
                     <td>
-                        <input type="text" id="packing-packed" class="input-field" name="packing-packed">
+                        <input type="text" id="packing-packed" class="table-input-field-small" name="packing-packed">
+                    </td>
+                    <td>
+                        <button type="submit" id="packing-submit" class="table-submit-btn">Add</button>
                     </td>
                 </tr>
+            </form>
             </table>
-            <button type="submit" id="packing-submit" class="submit-btn">Add</button> 
         </div>
         <div class="div-rightside">
             <h3>Usful Information</h3>
 
-        </div>        
-    </form>
+        </div>
     <hr>
     <form action="/delete_trip/{{ t.id }}" method="post">
         <button type="submit" id="delete-trip" class="red-submit-btn">Delete this trip</button>

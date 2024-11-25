@@ -132,6 +132,9 @@ const locationName = document.getElementById("location-name");
 let marker;  // Variable to store the map marker
 
 async function surpriseLocation() {
+    const hiddenCity = document.getElementById("hidden-city-input")
+    const hiddenCountry = document.getElementById("hidden-country-input")
+
     fetch("static/data/destinations.json")
     .then(response => response.json())  // Parse the JSON from the response
     .then(data => {
@@ -149,6 +152,8 @@ async function surpriseLocation() {
         marker = L.marker([lat, lon]).addTo(map)
             
         locationName.innerHTML = `${city}, ${country}`;
+        hiddenCity.value = `${city}`;
+        hiddenCountry.value = `${country}`
 
         // Set the map view to the random city's location
         map.setView([lat, lon], 5);

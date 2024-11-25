@@ -137,6 +137,19 @@ label {
     margin-bottom: 15px;
 }
 
+.table-input-field {
+    padding: 9px;
+    border: #130B11 1px solid;
+    border-radius: 7px;
+}
+
+.table-input-field-small {
+    max-width: 60px;
+    padding: 9px;
+    border: #130B11 1px solid;
+    border-radius: 7px;
+}
+
 .submit-btn {
     background-color: #130B11;
     color: #FFFFFF;
@@ -144,6 +157,15 @@ label {
     margin-top: 15px;
     padding: 9px;
     border-radius: 6px;
+    font-family: monospace;
+}
+
+.table-submit-btn {
+    background-color: #130B11;
+    color: #FFFFFF;
+    border: none;
+    padding: 9px;
+    border-radius: 7px;
     font-family: monospace;
 }
 
