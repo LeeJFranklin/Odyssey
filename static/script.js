@@ -178,6 +178,19 @@ async function searchLocation() {
         // Set the map view to the location
         map.setView([data.lat, data.lon], 4);
 
+        // Fetch weather data for the selected location
+        const weatherResponse = await fetch(`/api/weather?latitude=${data.lat}&longitude=${data.lon}`);
+        const weatherData = await weatherResponse.json();
+
+        if (weatherData.error) {
+            alert(`Weather API Error: ${weatherData.error}`);
+        } else {
+            // Update UI with weather details (e.g., temperature, humidity)
+            document.getElementById("weather-info").textContent = `
+                The current temperature is ${Math.round(weatherData.temperature)}°C
+            `;
+        }
+
     } else {
         alert(data.error || "Location not found");
     }
