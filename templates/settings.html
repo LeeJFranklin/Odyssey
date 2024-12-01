@@ -7,7 +7,12 @@
 {% block content %}
 
     <form id="change-password-form" action="/settings" method="post">
-        <h2>Settings</h2>
+        <div class="header">
+            <h2>Settings</h2>
+            <a href="/home"><span class="material-symbols-outlined">home</span></a>
+        </div>
+        <div class="spacer-div"></div>
+        <h3>Change Password</h3>
         <p id="change-password-error" class="error"></p>
         <div class="login-reg-window">
             <input id="current-password" name="current-password" class="input-field" autofocus autocomplete="off" placeholder="Current Password" type="password">
@@ -18,7 +23,7 @@
     </form>
     <form action="/delete_account" method="post">
         <div id="delete-account-form">
-        <button id="delete-account-btn" type="button" class="grey-btn" onclick="deleteAccount()">Delete Account</button>
+        <button id="delete-account-btn" type="button" class="icon-submit-btn" onclick="deleteAccount()">Delete Your Account</button>
         </div>
     </form>
 

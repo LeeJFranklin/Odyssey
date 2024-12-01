@@ -57,14 +57,33 @@ def info_scraper(loc):
         if not paragraphs:
             return "No paragraphs found on this page."
 
+        exclude_phrases = [
+            "This is an accepted version of this page", 
+            "Cork or CORK may refer to:",
+            "d)",
+            "New York most commonly refers to: New York may also refer to:",
+            "ˈheɾɑ] ⓘ) ",
+            "ʒɐˈneɾu] ⓘ)",
+            "Z-goh, GLASS- ; Scottish Gaelic: Glaschu ) "
+            ]
+
         # Extract and return the first non-empty paragraph
+        result = []
+
+        # Compile a regex pattern for exclusion based on the list of phrases
+        exclude_pattern = re.compile("|".join(re.escape(phrase) for phrase in exclude_phrases), re.IGNORECASE)
+
         for paragraph in paragraphs:
+            # Clean the text (remove references like [1] or (1))
             text = re.sub(r"\[.*?\]|\(.*?\)", "", paragraph.text).strip()
-            if text:
-                return text  # Return the first meaningful paragraph found
+
+            # Skip paragraphs that match any of the excluded phrases
+            if text and not exclude_pattern.search(text):
+                result.append(text)  # Add meaningful paragraph to the result
+            if len(result) == 2:  # Stop after collecting the first 2 valid paragraphs
+                break
         
-        # In case all paragraphs are empty
-        return "No meaningful content found in the paragraphs."
+        return " ".join(result)  # Combine the first two paragraphs into one string
     
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data from Wikipedia: {e}")

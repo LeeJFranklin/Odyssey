@@ -26,7 +26,6 @@
     { "country": "Indonesia", "city": "Jakarta", "coordinates": { "lat": -6.2088, "lon": 106.8456 } },
     { "country": "Iraq", "city": "Baghdad", "coordinates": { "lat": 33.3061701, "lon": 44.3872213 } },
     { "country": "Ireland", "city": "Dublin", "coordinates": { "lat": 53.3498, "lon": -6.2603 } },
-    { "country": "Ireland", "city": "Cork", "coordinates": { "lat": 51.8985, "lon": -8.4756 } },
     { "country": "Italy", "city": "Rome", "coordinates": { "lat": 41.9028, "lon": 12.4964 } },
     { "country": "Ivory Coast", "city": "Abidjan", "coordinates": { "lat": 5.320357, "lon": -4.016107 } },
     { "country": "Japan", "city": "Tokyo", "coordinates": { "lat": 35.676194, "lon": 139.650311 } },

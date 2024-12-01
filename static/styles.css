@@ -134,6 +134,10 @@ main {
     text-align: right;
 }
 
+.move-right {
+    margin-left: auto;
+}
+
 .inline-span {
     display: flex;
     gap: 10px;
@@ -141,6 +145,14 @@ main {
 
 #city-input, #country-input, #plan_new_trip {
     margin: 10px;
+}
+
+.glass-div {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
 }
 
 /* Divs Side by Side */
@@ -159,7 +171,7 @@ main {
     display: flex;
     flex-direction: column;
     width: 48%;
-    height: 210px;
+    height: 235px;
 }
 
 .div-leftside {
@@ -178,8 +190,21 @@ main {
     -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
 }
 
+#delete-account-form {
+    margin-top: 20px;
+    width: 20vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
 .map-sizing-div {
     height: 300px;
+}
+
+.spacer-div {
+    margin-bottom: 30px;
 }
 
 /* Ensure Divs Stay Side by Side */
@@ -371,6 +396,10 @@ a:hover {
 
 .list-style-none {
     list-style: none;
+}
+
+#city-input, #country-input {
+    width: 70em;
 }
 
 /* Cards */

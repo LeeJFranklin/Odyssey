@@ -168,37 +168,52 @@ def init_routes(app):
     @login_required
     def planner(trip_id):
         db = get_db()
-        db.row_factory = sqlite3.Row  # Enable dictionary-like row access
+        db.row_factory = sqlite3.Row  # Enables dict-like access to rows
         cursor = db.cursor()
+        today = date.today().strftime('%Y-%m-%d')  # Use ISO format for consistency
 
-        today = date.today().strftime('%Y-%m-%d')  # Format date as YYYY-MM-DD
+        if request.method == "GET":
+            # Fetch trip information
+            cursor.execute(
+                "SELECT * FROM trips WHERE user_id = ? AND id = ?;",
+                (session["user_id"], trip_id)
+            )
+            trip = cursor.fetchall()
 
-        # Fetch trip information
-        cursor.execute(
-            "SELECT * FROM trips WHERE user_id = ? AND id = ?;", (session["user_id"], trip_id)
-        )
+            if not trip:
+                flash("Trip not found or access denied.", "error")
+                return redirect(url_for("home"))
 
-        trip = cursor.fetchall()
+            # Extract trip details
+            trip_data = {
+                "startdate": trip[0]["startdate"],
+                "enddate": trip[0]["enddate"],
+                "transport": trip[0]["transport"],
+                "accommodation": trip[0]["accommodation"],
+                "budget": trip[0]["budget"]
+            }
 
-        if not trip:
-            # Handle case where trip is not found or unauthorized
-            flash("Trip not found or access denied.", "error")
-            return redirect(url_for("home"))  # Redirect to a safe route
-        
-        cursor.execute(
-            "SELECT * FROM itinerary WHERE trip_id = ? AND user_id = ? ORDER BY entry_date ASC, entry_time ASC;",
-            (trip_id, session["user_id"])
-        )
-        itinerary = cursor.fetchall()
+            # Return JSON if requested by an AJAX call
+            if request.headers.get("Accept") == "application/json":
+                return jsonify(trip_data)
 
-        cursor.execute(
-            "SELECT * FROM packing_list WHERE trip_id = ? AND user_id = ?;",
-            (trip_id, session["user_id"])
-        )
+            # Fetch associated itinerary
+            cursor.execute(
+                "SELECT * FROM itinerary WHERE trip_id = ? AND user_id = ? ORDER BY entry_date ASC, entry_time ASC;",
+                (trip_id, session["user_id"])
+            )
+            itinerary = cursor.fetchall()
 
-        packing_list = cursor.fetchall()
+            # Fetch associated packing list
+            cursor.execute(
+                "SELECT * FROM packing_list WHERE trip_id = ? AND user_id = ?;",
+                (trip_id, session["user_id"])
+            )
+            packing_list = cursor.fetchall()
 
-        if request.method == "POST":
+            return render_template("planner.html", trip=trip, itinerary=itinerary, packing_list=packing_list)
+
+        elif request.method == "POST":
             # Extract fields
             startdate = request.form.get("startdate")
             enddate = request.form.get("enddate")
@@ -206,17 +221,15 @@ def init_routes(app):
             accommodation = request.form.get("accommodation")
             budget = request.form.get("budget")
 
-            # Update data into trips table
+            # Update trip details
             cursor.execute(
-                "UPDATE trips SET startdate = ?, enddate = ?, transport = ?, accommodation = ?, budget = ? WHERE id = ? AND user_id = ?;", 
+                "UPDATE trips SET startdate = ?, enddate = ?, transport = ?, accommodation = ?, budget = ? WHERE id = ? AND user_id = ?;",
                 (startdate, enddate, transport, accommodation, budget, trip_id, session["user_id"])
             )
-
             db.commit()
 
-            return redirect(url_for("planner", trip_id=trip_id, min_date=today))
-
-        return render_template("planner.html", trip=trip, itinerary=itinerary, packing_list=packing_list)
+            flash("Trip updated successfully!", "success")
+            return redirect(url_for("planner", trip_id=trip_id))
     
     # Planner page itinerary section
     @app.route("/itinerary/<int:trip_id>", methods=["GET", "POST"])
@@ -286,7 +299,7 @@ def init_routes(app):
 
 
     
-    # Planner page packing_list section
+    # Planner page Packing List route
     @app.route("/packing_list/<int:trip_id>", methods=["GET", "POST"])
     @login_required
     def packing_list(trip_id):

@@ -212,9 +212,13 @@ async function getLocationInfo(location) {
     });
 
     const data = await response.json();
+    const additionalContent = `
+        <a href="https://www.wikipedia.com/wiki/${location}" target="_blank" id="read-more-link">[...Read More]</a>
+        <div class="spacer-div"></div>
+    `;
 
     // Update the HTML with the new data received from Flask (partial render)
-    document.getElementById("location-info").innerHTML = data.location_info;
+    document.getElementById("location-info").innerHTML = data.location_info + additionalContent;
 }
 
 // Runs the surpriseLocation() function on page load
@@ -237,9 +241,20 @@ const container = document.getElementById("editContainer");
 // Dynamically get the Trip ID from each page using the hidden <span>
 const tripId = document.getElementById("trip-id").textContent
 
-function loadEditForm() {
-    // Dynamically load the form into the container
-    container.innerHTML = `
+async function loadEditForm() {
+    try {
+        const response = await fetch(`/planner/${tripId}`, {
+            method: "GET",
+            headers: { "Accept": "application/json" }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch trip details: ${response.statusText}`);
+        }
+
+        const tripData = await response.json();
+
+        container.innerHTML = `
             <table class="trip-details-table">
                 <thead>
                     <tr>
@@ -250,37 +265,74 @@ function loadEditForm() {
                 <tbody>
                     <tr>
                         <td>Start Date</td>
-                        <td class="right-align"><input type="date" class="trip-details-input" id="startdate" name="startdate"></td>
+                        <td class="right-align"><input type="date" class="trip-details-input" id="startdate" name="startdate" value="${tripData.startdate}"></td>
                     </tr>
                     <tr>
                         <td>End Date</td>
-                        <td class="right-align"><input type="date" class="trip-details-input" id="enddate" name="enddate"></td>
+                        <td class="right-align"><input type="date" class="trip-details-input" id="enddate" name="enddate" value="${tripData.enddate}"></td>
                     </tr>
                     <tr>
                         <td>Transport Type</td>
-                        <td class="right-align"><input type="text" class="trip-details-input" id="transport" name="transport"></td>
+                        <td class="right-align"><input type="text" class="trip-details-input" id="transport" name="transport" value="${tripData.transport}"></td>
                     </tr>
                     <tr>
                         <td>Accommodation</td>
-                        <td class="right-align"><input type="text" class="trip-details-input" id="accommodation" name="accommodation"></td>
+                        <td class="right-align"><input type="text" class="trip-details-input" id="accommodation" name="accommodation" value="${tripData.accommodation}"></td>
                     </tr>
                     <tr>
-                        <td>Budget</td>
-                        <td class="right-align"><input type="text" class="trip-details-input" id="budget" name="budget"></td>
+                        <td>Total Budget</td>
+                        <td class="right-align"><input type="text" class="trip-details-input" id="budget" name="budget" value="${tripData.budget}"></td>
                     </tr>
+                    <tr>
+                        <td>Remaining Budget</td>
+                        <td id="remaining-budget" class="right-align"></td>
+                    </tr>           
                 </tbody>
             </table>
-    `;
-};
+        `;
+    } catch (error) {
+        console.error("Error loading form:", error);
+    }
+}
 
 function deleteAccount() {
     const deleteAccountForm = document.getElementById("delete-account-form");
     // Dynamically load delete account HTML
     deleteAccountForm.innerHTML = `
-        <h3>DELETE ACCOUNT</h3>
-        <p id="delete-error"></p>
-        <input class="input-field" type="password" id="delete-account-password" name="delete-account-password" placeholder="Password">
-        <input class="input-field" type="password" id="delete-account-confirm-password" name="delete-account-confirm-password" placeholder="Confirm Password">
-        <button type="submit" class="red-btn" id="delete-account-btn" name="delete-account-btn">DELETE ACCOUNT</button>
+        <div class="glass-div">
+            <button type="button" class="icon-submit-btn move-right" onclick="closeDeleteAccount()"><span class="material-symbols-outlined">close</span></button>
+            <h3>DELETE ACCOUNT</h3>
+            <p id="delete-error"></p>
+            <input class="input-field" type="password" id="delete-account-password" name="delete-account-password" placeholder="Password">
+            <input class="input-field" type="password" id="delete-account-confirm-password" name="delete-account-confirm-password" placeholder="Confirm Password">
+            <button type="submit" class="red-btn" id="delete-account-btn" name="delete-account-btn">DELETE ACCOUNT</button>
+        </div>
     `;
 };
+
+function closeDeleteAccount() {
+    const deleteAccountForm = document.getElementById("delete-account-form");
+    deleteAccountForm.innerHTML = `
+    <button id="delete-account-btn" type="button" class="icon-submit-btn" onclick="deleteAccount()">Delete Your Account</button>
+    `;
+};
+
+// Get the total budget value and remove any non-numeric characters
+const totalBudget = parseFloat(document.getElementById("total-budget").textContent.replace(/[^\d.-]/g, '').trim());
+
+// Get all elements with the class "entry-cost" and sum them up
+const entryCosts = document.getElementsByClassName("entry-cost");
+let totalCosts = 0;
+
+// Loop through the entry-cost elements and sum their values
+for (let i = 0; i < entryCosts.length; i++) {
+    totalCosts += parseFloat(entryCosts[i].textContent.replace(/[^\d.-]/g, '').trim());
+}
+
+// Calculate the remaining budget
+const remainingBudget = document.getElementById("remaining-budget");
+const budgetMinusCost = totalBudget - totalCosts;
+
+// Update the remaining budget element
+remainingBudget.innerHTML = "£" + budgetMinusCost.toFixed(2);  // Format the result to two decimal places
+

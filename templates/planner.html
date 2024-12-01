@@ -11,7 +11,7 @@
             <div class="header">
                 <h2><span id="trip-id" hidden>{{ t.id }}</span>Trip to <span id="planner-location">{{ t.city }}, {{ t.country }}</span></h2>
                 <span class="inline-span">
-                    <a href="/home"><span class="material-symbols-outlined">arrow_back_ios</span></a>
+                    <a href="/home"><span class="material-symbols-outlined">home</span></a>
                     <form action="/delete_trip/{{ t.id }}" method="post">
                         <button type="submit" id="delete-trip" class="icon-submit-btn"><span class="material-symbols-outlined">delete</span></button>
                     </form>
@@ -31,23 +31,27 @@
                                 <tbody>
                                     <tr>
                                         <td>Start Date</td>
-                                        <td class="right-align">{{ t.startdate if t.startdate else "" }}</td>
+                                        <td class="right-align">{{ t.startdate if t.startdate else "Not Set" }}</td>
                                     </tr>
                                     <tr>
                                         <td>End Date</td>
-                                        <td class="right-align">{{ t.enddate if t.enddate else "" }}</td>
+                                        <td class="right-align">{{ t.enddate if t.enddate else "Not Set" }}</td>
                                     </tr>
                                     <tr>
                                         <td>Transport Type</td>
-                                        <td class="right-align">{{ t.transport if t.transport else "" }}</td>
+                                        <td class="right-align">{{ t.transport if t.transport else "Not Set" }}</td>
                                     </tr>
                                     <tr>
                                         <td>Accommodation</td>
-                                        <td class="right-align">{{ t.accommodation if t.accommodation else "" }}</td>
+                                        <td class="right-align">{{ t.accommodation if t.accommodation else "Not Set" }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Budget</td>
-                                        <td class="right-align">{{ t.budget if t.budget else "" }}</td>
+                                        <td>Total Budget</td>
+                                        <td id="total-budget" class="right-align">£{{ t.budget if t.budget else "0" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Remaining Budget</td>
+                                        <td id="remaining-budget" class="right-align"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -86,7 +90,7 @@
                         <td class="left-align">{{ i.entry_date }}</td>
                         <td class="left-align">{{ i.entry_time }}</td>
                         <td class="left-align">{{ i.entry_info }}</td>
-                        <td class="left-align">{{ i.entry_cost }}</td>
+                        <td class="left-align entry-cost">£{{ i.entry_cost }}</td>
                         <td>
                             <form action="/delete_itinerary_entry/{{ i.id }}" method="POST">
                                 <input type="hidden" name="delete-entry-value" value="{{ i.trip_id }}">
