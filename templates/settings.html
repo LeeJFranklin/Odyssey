@@ -7,25 +7,18 @@
 {% block content %}
 
     <form id="change-password-form" action="/settings" method="post">
-        <h3>Settings</h3>
-        <hr>
+        <h2>Settings</h2>
         <p id="change-password-error" class="error"></p>
         <div class="login-reg-window">
-            <label for="current-password">Currect Password</label>
             <input id="current-password" name="current-password" class="input-field" autofocus autocomplete="off" placeholder="Current Password" type="password">
-            
-            <label for="new-password">New Password</label>
             <input id="new-password" name="new-password" class="input-field" autocomplete="off" placeholder="New Password" type="password">
-            
-            <label for="confirm-new-password">Confirm Password</label>
             <input id="confirm-new-password" name="confirm-new-password" class="input-field" autocomplete="off" placeholder="Confirm New Password" type="password">
-            <button id="change-password-btn" class="submit-btn" type="submit">Change Password</button>
+            <button id="change-password-btn" class="wide-grey-btn" type="submit">Change Password</button>
         </div>
     </form>
-        <hr>
     <form action="/delete_account" method="post">
         <div id="delete-account-form">
-        <button id="delete-account-btn" type="button" class="submit-btn" onclick="deleteAccount()">Delete Account</button>
+        <button id="delete-account-btn" type="button" class="grey-btn" onclick="deleteAccount()">Delete Account</button>
         </div>
     </form>
 

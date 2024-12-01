@@ -7,79 +7,79 @@
 {% block content %}
 
     <!-- Home Form -->
-        <div class="template-div">
+        <div class="top-div">
             <div class="header">
-                <h3>Welcome, {{ username }}!</h3>
-                <a href="/logout">Log Out</a>
+                <h2>Welcome, {{ username }}!</h2>
+                <span class="inline-span">   
+                    <a href="/settings"><span class="material-symbols-outlined">settings</span></a>
+                    <a href="/logout"><span class="material-symbols-outlined">logout</span></a>
+                </span>
             </div>
-            <hr>
             <div id="trips-home">
-                <form id="planner-form" action="/home" method="post"></form>
-                    <p id="planning-error" class="error"></p>
-                    <input id="city-input" name="city" class="input-field" autofocus autocomplete="off" placeholder="City" type="text">
-                    <input id="country-input" name="country" class="input-field" autocomplete="off" placeholder="Country" type="text">
-                    <button id="plan_new_trip" class="submit-btn" type="submit">
-                        Plan a new trip
-                    </button>
-                </form>
-                <table>
-                    <tr>
-                        <th colspan="2">
-                            Saved Trips
-                        </th>
-                    </tr>
-                    {% if locations %}
-                    {% for id, city, country in locations %}
-                    <tr>
-                        <td>
-                            <a href="/planner/{{ id }}"><span hidden>{{ id }}</span>Trip to {{ city }}, {{ country }}</a>
-                        </td>
-                        <td>
-                            <form action="delete_trip/{{ id }}" method="POST">
-                                <button type="submit" class="table-submit-btn">Delete Trip</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% else %}
-                    <tr>
-                        <td colspan="2">
-                            You have no saved trips
-                        </td>
-                    </tr>
-                    {% endif %}
-                </table>
+                <div class="planner-input-div">
+                    <form class="inline-form" id="planner-form" action="/home" method="post"></form>
+                        <p id="planning-error" class="error"></p>
+                        <input id="city-input" name="city" class="input-field" autofocus autocomplete="off" placeholder="City" type="text">
+                        <input id="country-input" name="country" class="input-field" autocomplete="off" placeholder="Country" type="text">
+                        <button id="plan_new_trip" class="grey-btn" type="submit">
+                            Plan a new trip
+                        </button>
+                    </form>
+                </div>
+                <div class="trips-table-div">
+                    <table class="saved-trips-table">
+                        <tr>
+                            <th colspan="2">
+                                <h3>Saved Trips</h3>
+                            </th>
+                        </tr>
+                        {% if locations %}
+                        {% for id, city, country in locations %}
+                        <tr>
+                            <td>
+                                <a href="/planner/{{ id }}"><span hidden>{{ id }}</span>Trip to {{ city }}, {{ country }}</a>
+                            </td>
+                            <td class="delete-trip">
+                                <form action="delete_trip/{{ id }}" method="POST">
+                                    <button type="submit" class="icon-submit-btn"><span class="material-symbols-outlined">
+                                        delete
+                                        </span></button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="2">
+                                You have no saved trips
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </div>
             </div>
         </div>
 
     <!-- Explore Form -->
-
-        <div id="explore-div" class="template-div">
-            <hr>
+        <div class="bottom-div" id="explore-div">
             <h3>Explore New Destinations</h3>
-            <div class="div-leftside">
+            <div class="template-div">
                 <!-- Leaflet map -->
-                <div  id="map"></div>
-            </div>
-    
-            <div class="div-rightside">
-                <h3 id="location-name"></h3>
-                <div id="location-info"></div>
-                <form action="/plan_trip_here" method="post">
-                    <input type="hidden" id="hidden-city-input" name="hidden-city-input" value="">
-                    <input type="hidden" id="hidden-country-input" name="hidden-country-input" value="">
-                    <button class="submit-btn" type="submit">Plan a Trip Here</button>
-                </form>
-                <form action="/explore" method="post">
-                    <button class="surprise-btn" id="explore-surprise-btn" name="action" value="surprise" type="submit">Suggest New Destination</button>
-                </form>
+                <div class="div-leftside" id="map"></div>
+                <div class="div-rightside">
+                    <h3 id="location-name"></h3>
+                    <div id="location-info"></div>
+                    <div class="btn-row-div">
+                        <form action="/plan_trip_here" method="post">
+                            <input type="hidden" id="hidden-city-input" name="hidden-city-input" value="">
+                            <input type="hidden" id="hidden-country-input" name="hidden-country-input" value="">
+                            <button class="grey-btn" id="plan-trip-here-btn" type="submit">Plan a Trip Here</button>
+                        </form>
+                        <form action="/explore" method="post">
+                            <button class="orange-btn" id="explore-surprise-btn" name="action" value="surprise" type="submit">Suggest New Destination</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-    
-
-    <hr>
-    <div class="footer">
-        <a href="/settings">Account Settings</a>
-    </div>
-
 {% endblock %}

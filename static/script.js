@@ -185,9 +185,15 @@ async function searchLocation() {
         if (weatherData.error) {
             alert(`Weather API Error: ${weatherData.error}`);
         } else {
-            // Update UI with weather details (e.g., temperature, humidity)
-            document.getElementById("weather-info").textContent = `
-                The current temperature is ${Math.round(weatherData.temperature)}°C
+            const forecast = weatherData.daily.map(day => `
+                <li class="list-style-none">
+                   <span class="material-symbols-outlined weather">calendar_today</span> ${day.date} <span class="material-symbols-outlined weather">sunny</span> ${Math.round(day.temperature_max)}°C <span class="material-symbols-outlined weather">bedtime</span> ${Math.round(day.temperature_min)}°C <span class="material-symbols-outlined weather">rainy</span> ${Math.round(day.rain_sum)}mm
+                </li>
+            `).join("");
+        
+            document.getElementById("weather-info").innerHTML = `
+                <h3>7 Day Weather Forecast</h3>
+                <ul>${forecast}</ul>
             `;
         }
 
@@ -234,33 +240,33 @@ const tripId = document.getElementById("trip-id").textContent
 function loadEditForm() {
     // Dynamically load the form into the container
     container.innerHTML = `
-            <table>
+            <table class="trip-details-table">
                 <thead>
                     <tr>
-                        <th>Details</th>
-                        <th><button id="save-button" class="submit-btn">Save</button></th>
+                        <th class="th-start"><p class="yellow-text">Details</p></th>
+                        <th class="right-align"><button id="save-button" class="icon-submit-btn"><span class="material-symbols-outlined">check</span></button></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Start Date</td>
-                        <td><input type="date" id="startdate" name="startdate"></td>
+                        <td class="right-align"><input type="date" class="trip-details-input" id="startdate" name="startdate"></td>
                     </tr>
                     <tr>
                         <td>End Date</td>
-                        <td><input type="date" id="enddate" name="enddate"></td>
+                        <td class="right-align"><input type="date" class="trip-details-input" id="enddate" name="enddate"></td>
                     </tr>
                     <tr>
                         <td>Transport Type</td>
-                        <td><input type="text" id="transport" name="transport"></td>
+                        <td class="right-align"><input type="text" class="trip-details-input" id="transport" name="transport"></td>
                     </tr>
                     <tr>
                         <td>Accommodation</td>
-                        <td><input type="text" id="accommodation" name="accommodation"></td>
+                        <td class="right-align"><input type="text" class="trip-details-input" id="accommodation" name="accommodation"></td>
                     </tr>
                     <tr>
                         <td>Budget</td>
-                        <td><input type="text" id="budget" name="budget"></td>
+                        <td class="right-align"><input type="text" class="trip-details-input" id="budget" name="budget"></td>
                     </tr>
                 </tbody>
             </table>
@@ -275,6 +281,6 @@ function deleteAccount() {
         <p id="delete-error"></p>
         <input class="input-field" type="password" id="delete-account-password" name="delete-account-password" placeholder="Password">
         <input class="input-field" type="password" id="delete-account-confirm-password" name="delete-account-confirm-password" placeholder="Confirm Password">
-        <button type="submit" class="red-submit-btn" id="delete-account-btn" name="delete-account-btn">DELETE ACCOUNT</button>
+        <button type="submit" class="red-btn" id="delete-account-btn" name="delete-account-btn">DELETE ACCOUNT</button>
     `;
 };
