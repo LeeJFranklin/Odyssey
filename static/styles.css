@@ -145,6 +145,13 @@ main {
     margin-left: auto;
 }
 
+.inline-form {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+}
+
 .inline-span {
     display: flex;
     gap: 10px;
