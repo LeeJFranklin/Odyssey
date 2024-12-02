@@ -48,6 +48,7 @@ main {
 
 .planner-input-div {
     display: flex;
+    justify-content: center;
     width: 100%;
 }
 
@@ -65,6 +66,7 @@ main {
 
 .itinerary-table-div {
     width: 67vw;
+    min-width: 810px;
     margin-top: 5px;
     margin-bottom: 30px;
     padding: 20px;
@@ -72,6 +74,11 @@ main {
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
+}
+
+#weather-info {
+    text-align: center;
+    padding: 5px;
 }
 
 .delete-trip {
@@ -160,6 +167,7 @@ main {
     display: flex;
     flex-direction: column;
     width: 48%;
+    min-width: 381px;
     padding: 20px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 15px;
@@ -171,15 +179,16 @@ main {
     display: flex;
     flex-direction: column;
     width: 48%;
+    min-width: 381px;
     height: 235px;
 }
 
 .div-leftside {
-    margin-right: 3%;
+    margin-right: 2.5%;
 }
 
 .div-rightside {
-    margin-left: 3%;
+    margin-left: 2.5%;
 }
 
 #location-info {
@@ -200,7 +209,7 @@ main {
 }
 
 .map-sizing-div {
-    height: 300px;
+    height: 400px;
 }
 
 .spacer-div {
@@ -210,8 +219,8 @@ main {
 /* Ensure Divs Stay Side by Side */
 .template-div {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     width: 90%;
     margin: 20px auto;
 }
@@ -274,16 +283,21 @@ a:hover {
     margin-bottom: 0rem !important;
 }
 
+.bigger-link {
+    font-size: 1.15rem !important;
+}
+
 /* Buttons */
 .grey-btn, .table-submit-btn, .red-btn, .orange-btn, .wide-grey-btn {
     font-family: 'Noto Sans', sans-serif;
-    padding: 12px 20px;
+    padding: 11px 20px;
     font-size: 1rem;
     font-weight: 400;
     border: none;
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.4s ease;
+    max-height: min-content;
 }
 
 .grey-btn:hover, 
@@ -377,7 +391,12 @@ a:hover {
 }
 
 /* Forms */
-.input-field, .table-input-field, .table-input-field-small {
+.input-field,
+.table-input-field,
+.table-input-field-small,
+.table-input-field-date,
+.table-input-field-time,
+.table-input-field-info {
     padding: 12px;
     margin-bottom: 15px;
     border: none;
@@ -388,10 +407,31 @@ a:hover {
 
 .input-field:focus, 
 .table-input-field:focus, 
-.table-input-field-small:focus {
+.table-input-field-small:focus,
+.table-input-field-date:focus,
+.table-input-field-time:focus,
+.table-input-field-info:focus {
     border-color: #FFD700;
     box-shadow: 0 0 8px rgba(255, 215, 0, 0.9);
     outline: none;
+}
+
+.table-input-field-small {
+    width: 5em;
+}
+
+.table-input-field-date {
+    width: 9.25em;
+    height: 42px;
+}
+
+.table-input-field-time {
+    width: 6.5em;
+    height: 42px;
+}
+
+.table-input-field-info {
+    width: 23em;
 }
 
 .list-style-none {
@@ -400,14 +440,30 @@ a:hover {
 
 #city-input, #country-input {
     width: 70em;
+    max-height: min-content;
 }
 
 /* Cards */
-.login-reg-window {
+.form-window {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 15px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    backdrop-filter: blur(10px);
+    color: white;
+}
+
+.delete-form-window {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    padding: 10px 10px 40px 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -460,5 +516,9 @@ a:hover {
 
     h3 {
         font-size: 1.5rem;
+    }
+
+    .bigger-link {
+        font-size: 1rem !important;
     }
 }

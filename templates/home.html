@@ -21,7 +21,7 @@
                         <p id="planning-error" class="error"></p>
                         <input id="city-input" name="city" class="input-field" autofocus autocomplete="off" placeholder="City" type="text">
                         <input id="country-input" name="country" class="input-field" autocomplete="off" placeholder="Country" type="text">
-                        <button id="plan_new_trip" class="grey-btn" type="submit">Plan a new trip</button>
+                        <button id="plan_new_trip" class="grey-btn" type="submit">Plan</button>
                     </form>
                 </div>
                 <div class="trips-table-div">
@@ -35,7 +35,7 @@
                         {% for id, city, country in locations %}
                         <tr>
                             <td>
-                                <a href="/planner/{{ id }}"><span hidden>{{ id }}</span>Trip to {{ city }}, {{ country }}</a>
+                                <a href="/planner/{{ id }}" class="bigger-link"><span hidden>{{ id }}</span>Trip to {{ city }}, {{ country }}</a>
                             </td>
                             <td class="delete-trip">
                                 <form action="delete_trip/{{ id }}" method="POST">
@@ -48,7 +48,7 @@
                         {% endfor %}
                         {% else %}
                         <tr>
-                            <td colspan="2">
+                            <td class="center-align" colspan="2">
                                 You have no saved trips
                             </td>
                         </tr>

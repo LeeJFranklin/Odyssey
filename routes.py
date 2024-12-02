@@ -390,17 +390,17 @@ def init_routes(app):
 
             if not check_password_hash(user["password_hash"], password):
                 flash("Password is incorrect", "error")
-                return redirect(url_for("login"))
+                return redirect(url_for("settings"))
             elif new_password != confirm_password:
                 flash("Passwords do not match", "error")
-                return redirect(url_for("login"))
+                return redirect(url_for("settings"))
             else:
                 cursor.execute(
                     "UPDATE users SET password_hash = ? WHERE id = ?;", (generate_password_hash(new_password), session["user_id"])
                 )
                 db.commit()
                 
-                return redirect(url_for("home"))
+                return redirect(url_for("settings"))
 
         return render_template("settings.html")
     
@@ -413,12 +413,25 @@ def init_routes(app):
             db.row_factory = sqlite3.Row  # Enable dictionary-like row access
             cursor = db.cursor()
 
+            password = request.form.get("delete-account-password")
+            confirm_password = request.form.get("delete-account-confirm-password")
+
             cursor.execute(
-                "DELETE FROM users WHERE id = ?;", (session["user_id"],)
+                "SELECT password_hash FROM users WHERE id = ?;", (session["user_id"],)
             )
-            db.commit()
-            session.clear()
-            return redirect("/")
+            user = cursor.fetchone()
+
+            if not check_password_hash(user["password_hash"], password):
+                flash("Password is incorrect", "error")
+            elif password != confirm_password:
+                flash("Passwords do not match", "error")
+            else:
+                cursor.execute(
+                    "DELETE FROM users WHERE id = ?;", (session["user_id"],)
+                )
+                db.commit()
+                session.clear()
+                return redirect("/")
         
         return render_template("settings.html")
 

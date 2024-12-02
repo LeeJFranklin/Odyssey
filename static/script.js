@@ -299,7 +299,7 @@ function deleteAccount() {
     const deleteAccountForm = document.getElementById("delete-account-form");
     // Dynamically load delete account HTML
     deleteAccountForm.innerHTML = `
-        <div class="glass-div">
+        <div class="delete-form-window">
             <button type="button" class="icon-submit-btn move-right" onclick="closeDeleteAccount()"><span class="material-symbols-outlined">close</span></button>
             <h3>DELETE ACCOUNT</h3>
             <p id="delete-error"></p>

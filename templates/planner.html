@@ -107,13 +107,13 @@
                     <form action="/itinerary/{{ t.id }}" method="post">
                         <tr>
                             <td>
-                                <input type="date" id="itinerary-date" class="table-input-field" name="itinerary-date">
+                                <input type="date" id="itinerary-date" class="table-input-field-date" name="itinerary-date">
                             </td>
                             <td>
-                                <input type="time" id="itinerary-time" class="table-input-field" name="itinerary-time">
+                                <input type="time" id="itinerary-time" class="table-input-field-time" name="itinerary-time">
                             </td>
                             <td>
-                                <input type="text" id="itinerary-info" class="table-input-field" name="itinerary-info" placeholder="Information">
+                                <input type="text" id="itinerary-info" class="table-input-field-info" name="itinerary-info" placeholder="Information">
                             </td>
                             <td>
                                 <input type="number" id="itinerary-cost" class="table-input-field-small" name="itinerary-cost" placeholder="Cost"> 
@@ -161,7 +161,7 @@
                                     <input type="text" id="packing-item" class="table-input-field" name="packing-item" placeholder="Item">
                                 </td>
                                 <td>
-                                    <input type="number" id="packing-amount" class="table-input-field-small" name="packing-amount" placeholder="Amount">
+                                    <input type="number" id="packing-amount" class="table-input-field-small" name="packing-amount" placeholder="1+">
                                 </td>
                                 <td>
                                     <button type="submit" id="packing-submit" class="icon-submit-btn"><span class="material-symbols-outlined">add</span></button>
@@ -172,7 +172,7 @@
                 </table>
             </div>
             <div class="div-rightside">
-                <div id="weather-info" class="center-align"></div>
+                <div id="weather-info"></div>
             </div>
         </div>  
     </div>
