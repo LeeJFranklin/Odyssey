@@ -14,6 +14,16 @@ const passwordIsValid = (password) => {
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(password);
 };
 
+// Function for shake animation
+const shakeError = (object) => {
+        // Add the shake animation to the entire container
+        object.classList.add("shake");
+        // Remove the shake class after the animation ends
+        object.addEventListener("animationend", function () {
+            object.classList.remove("shake");
+        }, { once: true }); // Ensure the event listener is removed after one use
+    };
+
 // Registration form validation
 document.getElementById("register-form")?.addEventListener("submit", function(event) {
     const registerUsername = document.getElementById("register-username");
@@ -86,15 +96,6 @@ document.getElementById("delete-account-form")?.addEventListener("submit", funct
     const deleteErrorMsg = document.getElementById("delete-error");
     const deleteAccountForm = document.getElementById("delete-account-form");
 
-    const shakeError = () => {
-        // Add the shake animation to the entire container
-        deleteAccountForm.classList.add("shake");
-        // Remove the shake class after the animation ends
-        deleteAccountForm.addEventListener("animationend", function () {
-            deleteAccountForm.classList.remove("shake");
-        }, { once: true }); // Ensure the event listener is removed after one use
-    };
-
     // Clear previous error message
     deleteErrorMsg.innerHTML = "";
 
@@ -104,11 +105,11 @@ document.getElementById("delete-account-form")?.addEventListener("submit", funct
     if (accountPassword.value === "") {
         deleteErrorMsg.innerHTML = "Please enter your password";
         validationError = true;
-        shakeError();
+        shakeError(deleteAccountForm);
     } else if (accountPassword != confirmAccountPassword) {
         deleteErrorMsg.innerHTML = "Please confirm your password";
         validationError = true;
-        shakeError();
+        shakeError(deleteAccountForm);
     }
 
     if (validationError) {
