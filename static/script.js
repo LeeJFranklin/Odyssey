@@ -29,8 +29,9 @@ document.getElementById("register-form")?.addEventListener("submit", function(ev
     const registerUsername = document.getElementById("register-username");
     const registerEmail = document.getElementById("register-email")
     const registerPass = document.getElementById("register-password");
-    const confirmRegisterPass = document.getElementById("confirm-register-password")
-    const errorMsg = document.getElementById("register-error")
+    const confirmRegisterPass = document.getElementById("confirm-register-password");
+    const errorMsg = document.getElementById("register-error");
+    const registerWindow = document.getElementById("register-window");
 
     // Clear previous error messages
     errorMsg.innerHTML = "";
@@ -57,6 +58,35 @@ document.getElementById("register-form")?.addEventListener("submit", function(ev
 
     // Prevent form submission if there were any validation errors
     if (validationError) {
+        shakeError(registerWindow);
+        event.preventDefault();
+    }
+});
+
+// Log in form validation
+document.getElementById("login-form")?.addEventListener("submit", function(event) {
+    const loginUser = document.getElementById("username");
+    const loginPassword = document.getElementById("password");
+    const errorMsg = document.getElementById("login-error");
+    const loginWindow = document.getElementById("login-window");
+
+    // Clear previous error messages
+    errorMsg.innerHTML = "";
+
+    // Prevent submission if there are validation errors
+    let validationError = false;
+
+    if (loginUser.value === "") {
+        errorMsg.innerHTML = "Please enter your username";
+        validationError = true;
+    } else if (loginPassword.value === "") {
+        errorMsg.innerHTML = "Please enter your password";
+        validationError = true;
+    };
+
+    // Prevent form submission if there were any validation errors
+    if (validationError) {
+        shakeError(loginWindow);
         event.preventDefault();
     }
 });
@@ -66,7 +96,8 @@ document.getElementById("change-password-form")?.addEventListener("submit", func
     const currentPassword = document.getElementById("current-password");
     const newPassword = document.getElementById("new-password");
     const confirmNewPassword = document.getElementById("confirm-new-password");
-    const changePasswordError = document.getElementById("change-password-error")
+    const changePasswordError = document.getElementById("change-password-error");
+    const passwordWindow = document.getElementById("change-password-window");
 
     // Clear previous error messages
     changePasswordError.innerHTML = "";
@@ -85,6 +116,7 @@ document.getElementById("change-password-form")?.addEventListener("submit", func
 
     // Prevent form submission if there were any validation errors
     if (validationError) {
+        shakeError(passwordWindow)
         event.preventDefault();
     }
 });
@@ -105,17 +137,15 @@ document.getElementById("delete-account-form")?.addEventListener("submit", funct
     if (accountPassword.value === "") {
         deleteErrorMsg.innerHTML = "Please enter your password";
         validationError = true;
-        shakeError(deleteAccountForm);
     } else if (accountPassword != confirmAccountPassword) {
         deleteErrorMsg.innerHTML = "Please confirm your password";
         validationError = true;
-        shakeError(deleteAccountForm);
     }
 
     if (validationError) {
+        shakeError(deleteAccountForm);
         event.preventDefault();
     }
-
 });
 
 // Trip planning input validation

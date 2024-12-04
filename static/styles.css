@@ -281,8 +281,14 @@ a:hover {
 }
 
 .error {
+    position: fixed;
+    top: 22%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
     color: #ff0000 !important;
     font-style: italic;
+    z-index: 1000;
 }
 
 .yellow-text {
@@ -456,6 +462,7 @@ a:hover {
     border-radius: 15px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     padding: 30px;
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;

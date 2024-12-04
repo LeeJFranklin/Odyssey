@@ -6,11 +6,11 @@
 
 {% block content %}
 
-    <form action="/login" method="post">
+    <form id="login-form" action="/login" method="post">
         <h2>Log In</h2>
-        <p id="password-error"></p>
+        <p id="login-error" class="error"></p>
 
-        <div class="form-window">
+        <div id="login-window" class="form-window">
             <input id="username" name="username" class="input-field" autofocus autocomplete="off" placeholder="Username" type="text">
             <input id="password" name="password" class="input-field" autocomplete="off" placeholder="Password" type="password">
             <button class="orange-btn" type="submit">Log In</button>
