@@ -50,7 +50,8 @@ document.getElementById("register-form")?.addEventListener("submit", function(ev
         event.preventDefault();
     }
 });
-    
+
+// Change password validation
 document.getElementById("change-password-form")?.addEventListener("submit", function(event) {
     const currentPassword = document.getElementById("current-password");
     const newPassword = document.getElementById("new-password");
@@ -76,6 +77,44 @@ document.getElementById("change-password-form")?.addEventListener("submit", func
     if (validationError) {
         event.preventDefault();
     }
+});
+
+// Delete account validation
+document.getElementById("delete-account-form")?.addEventListener("submit", function(event) {
+    const accountPassword = document.getElementById("delete-account-password");
+    const confirmAccountPassword = document.getElementById("confirm-delete-account-password");
+    const deleteErrorMsg = document.getElementById("delete-error");
+    const deleteAccountForm = document.getElementById("delete-account-form");
+
+    const shakeError = () => {
+        // Add the shake animation to the entire container
+        deleteAccountForm.classList.add("shake");
+        // Remove the shake class after the animation ends
+        deleteAccountForm.addEventListener("animationend", function () {
+            deleteAccountForm.classList.remove("shake");
+        }, { once: true }); // Ensure the event listener is removed after one use
+    };
+
+    // Clear previous error message
+    deleteErrorMsg.innerHTML = "";
+
+    // Prevent submission if there are validation errors
+    let validationError = false;
+
+    if (accountPassword.value === "") {
+        deleteErrorMsg.innerHTML = "Please enter your password";
+        validationError = true;
+        shakeError();
+    } else if (accountPassword != confirmAccountPassword) {
+        deleteErrorMsg.innerHTML = "Please confirm your password";
+        validationError = true;
+        shakeError();
+    }
+
+    if (validationError) {
+        event.preventDefault();
+    }
+
 });
 
 // Trip planning input validation
