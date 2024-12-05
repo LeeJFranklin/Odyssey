@@ -30,29 +30,47 @@ document.getElementById("register-form")?.addEventListener("submit", function(ev
     const registerEmail = document.getElementById("register-email")
     const registerPass = document.getElementById("register-password");
     const confirmRegisterPass = document.getElementById("confirm-register-password");
-    const errorMsg = document.getElementById("register-error");
+    const usernameError = document.getElementById("reg-user-error");
+    const emailError = document.getElementById("reg-email-error");
+    const passwordError = document.getElementById("reg-password-error");
+    const confirmPasswordError = document.getElementById("confirm-reg-password-error");
     const registerWindow = document.getElementById("register-window");
 
     // Clear previous error messages
-    errorMsg.innerHTML = "";
+    usernameError.innerHTML = "";
+    emailError.innerHTML = "";
+    passwordError.innerHTML = "";
+    confirmPasswordError.innerHTML = "";
 
     // Prevent submission if there are validation errors
     let validationError = false;
 
-    if (registerUsername.value === "") {
-        errorMsg.innerHTML = "Please choose a Username";
+    if (registerUsername.value.trim() === "") {
+        usernameError.innerHTML = "Required";
         validationError = true;
     } else if (!usernameIsValid(registerUsername.value)) {
-        errorMsg.innerHTML = "Username must not contain spaces";
+        usernameError.innerHTML = "Username must not contain spaces";
+        validationError = true;
+    };
+
+    if (registerEmail.value.trim() === "") {
+        emailError.innerHTML = "Required";
         validationError = true;
     } else if (!emailIsValid(registerEmail.value)) {
-        errorMsg.innerHTML = "Please enter a valid email address";
+        emailError.innerHTML = "Enter a valid email addess";
+        validationError = true;
+    };
+
+    if (registerPass.value.trim() === "") {
+        passwordError.innerHTML = "Required";
         validationError = true;
     } else if (!passwordIsValid(registerPass.value)) {
-        errorMsg.innerHTML = "Password must be 8+ characters with 1 uppercase, 1 lowercase, 1 number, and 1 special character";
+        passwordError.innerHTML = "Password must be 8+ characters with 1 uppercase, 1 lowercase, 1 number, and 1 special character";
         validationError = true;
-    } else if (confirmRegisterPass.value != registerPass.value) {
-        errorMsg.innerHTML = "Passwords do not match";
+    };
+    
+    if (confirmRegisterPass.value != registerPass.value) {
+        confirmPasswordError.innerHTML = "Passwords do not match";
         validationError = true;
     };
 
@@ -63,26 +81,30 @@ document.getElementById("register-form")?.addEventListener("submit", function(ev
     }
 });
 
-// Log in form validation
+// Login form validation
 document.getElementById("login-form")?.addEventListener("submit", function(event) {
     const loginUser = document.getElementById("username");
     const loginPassword = document.getElementById("password");
-    const errorMsg = document.getElementById("login-error");
+    const userError = document.getElementById("username-error");
+    const passwordError = document.getElementById("password-error");
     const loginWindow = document.getElementById("login-window");
-
+ 
     // Clear previous error messages
-    errorMsg.innerHTML = "";
-
+    userError.innerHTML = "";
+    passwordError.innerHTML = "";
+ 
     // Prevent submission if there are validation errors
     let validationError = false;
+ 
+    if (loginUser.value.trim() === "") {
+        userError.innerHTML = "Required";
+        validationError = true;
+    }
 
-    if (loginUser.value === "") {
-        errorMsg.innerHTML = "Please enter your username";
+    if (loginPassword.value.trim() === "") {
+        passwordError.innerHTML = "Required";
         validationError = true;
-    } else if (loginPassword.value === "") {
-        errorMsg.innerHTML = "Please enter your password";
-        validationError = true;
-    };
+    }
 
     // Prevent form submission if there were any validation errors
     if (validationError) {

@@ -8,11 +8,14 @@
 
     <form id="register-form" action="/register" method="post">
         <h2>Register</h2>
-        <p id="register-error" class="error"></p>
         <div id="register-window" class="form-window">
+            <p id="reg-user-error" class="error"></p>
             <input id="register-username" name="username" class="input-field" autofocus autocomplete="off" placeholder="Username" type="text">
+            <p id="reg-email-error" class="error"></p>
             <input id="register-email" name="email" class="input-field" autocomplete="off" placeholder="example@email.com" type="email">
+            <p id="reg-password-error" class="error"></p>
             <input id="register-password" name="password" class="input-field" autocomplete="off" placeholder="Password" type="password">
+            <p id="confirm-reg-password-error" class="error"></p>
             <input id="confirm-register-password" name="confirm-password" class="input-field" autocomplete="off" placeholder="Confirm Password" type="password">
             <button class="orange-btn" type="submit">Register</button>
         </div>
