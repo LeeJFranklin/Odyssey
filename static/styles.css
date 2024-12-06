@@ -468,7 +468,7 @@ a:hover {
     color: white;
 }
 
-.delete-form-window {
+.tight-form-window {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 15px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
