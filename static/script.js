@@ -1,6 +1,6 @@
 // Function for checking if username is valid
 const usernameIsValid = (username) => {
-    return /^[^\s]+$/.test(username);
+    return /^[a-zA-Z0-9]+$/.test(username);
 };
     
 // Function for checking if email address is valid
@@ -25,7 +25,7 @@ const shakeError = (object) => {
     };
 
 // Registration form validation
-document.getElementById("register-form")?.addEventListener("submit", function(event) {
+document.getElementById("register-form")?.addEventListener("submit", async function(event) {
     const registerUsername = document.getElementById("register-username");
     const registerEmail = document.getElementById("register-email")
     const registerPass = document.getElementById("register-password");
@@ -34,6 +34,7 @@ document.getElementById("register-form")?.addEventListener("submit", function(ev
     const emailError = document.getElementById("reg-email-error");
     const passwordError = document.getElementById("reg-password-error");
     const confirmPasswordError = document.getElementById("confirm-reg-password-error");
+    const errorBox = document.getElementById("reg-error-box");
     const registerWindow = document.getElementById("register-window");
 
     // Clear previous error messages
@@ -41,36 +42,44 @@ document.getElementById("register-form")?.addEventListener("submit", function(ev
     emailError.innerHTML = "";
     passwordError.innerHTML = "";
     confirmPasswordError.innerHTML = "";
+    errorBox.innerHTML = "";
+    errorBox.classList.remove("error-box");
 
     // Prevent submission if there are validation errors
     let validationError = false;
 
     if (registerUsername.value.trim() === "") {
+        registerUsername.value = "";
         usernameError.innerHTML = "Required";
         validationError = true;
     } else if (!usernameIsValid(registerUsername.value)) {
-        usernameError.innerHTML = "Username must not contain spaces";
+        errorBox.classList.add("error-box")
+        errorBox.innerHTML = "Usernames must be alphanumeric";
         validationError = true;
     };
 
     if (registerEmail.value.trim() === "") {
+        registerEmail.value = "";
         emailError.innerHTML = "Required";
         validationError = true;
     } else if (!emailIsValid(registerEmail.value)) {
-        emailError.innerHTML = "Enter a valid email addess";
+        errorBox.classList.add("error-box")
+        errorBox.innerHTML = "Enter a valid email addess";
         validationError = true;
     };
 
     if (registerPass.value.trim() === "") {
+        registerPass.value = "";
         passwordError.innerHTML = "Required";
         validationError = true;
     } else if (!passwordIsValid(registerPass.value)) {
-        passwordError.innerHTML = "Password must be 8+ characters with 1 uppercase, 1 lowercase, 1 number, and 1 special character";
+        errorBox.classList.add("error-box")
+        errorBox.innerHTML = "Password must be 8+ characters with 1 uppercase, 1 lowercase, 1 number, and 1 special character";
         validationError = true;
     };
     
     if (confirmRegisterPass.value != registerPass.value) {
-        confirmPasswordError.innerHTML = "Passwords do not match";
+        errorBox.innerHTML = "Passwords do not match";
         validationError = true;
     };
 
@@ -454,4 +463,4 @@ const budgetMinusCost = totalBudget - totalCosts;
 
 // Update the remaining budget element
 remainingBudget.innerHTML = "£" + budgetMinusCost.toFixed(2);  // Format the result to two decimal places
-
+  

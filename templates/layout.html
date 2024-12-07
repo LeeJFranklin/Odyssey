@@ -12,7 +12,7 @@
          crossorigin=""/>
 
         <!-- Link to Google font API -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios,bedtime,calendar_today,check,close,delete,edit,home,logout,rainy,settings,sunny" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios,bedtime,calendar_today,check,close,delete,edit,home,login,logout,rainy,settings,sunny" />
 
         <link rel="icon" href="/static/images/favicon.ico">
         <link rel="preload" href="/static/images/landing-background.jpg" as="image">
@@ -21,22 +21,14 @@
     <header class="app-header">
         <nav class="nav-bar-global">
             {% if session["user_id"] %}
-            <div class="nav-bar-left">
+            <div class="nav-bar-right">
             </div>
             {% else %}
-            <div class="nav-bar-left">
             <div class="nav-bar-right">
                 <ul class="list-style-none">
                     <li>
-                        <a href="/register">
-                            <span>Register</span>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="list-style-none">
-                    <li>
                         <a href="/login">
-                            <span>Log In</span>
+                            <span class="material-symbols-outlined">login</span>
                         </a>
                     </li>
                 </ul>
@@ -50,6 +42,10 @@
             {% endblock %}
         </main>
     </body>
+    <footer>
+        <p class="yellow-text">&copy; 2024 <a href="/">Odyssey</a>. All rights reserved.</p>
+        <br>
+    </footer>
 
     <!-- Leaflet JavaScript file -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -57,5 +53,6 @@
      crossorigin=""></script>
 
     <!-- Local JavaScript file -->
+    <script src="/static/carousel.js"></script>
     <script src="/static/script.js"></script>
 </html>

@@ -6,8 +6,49 @@
 
 {% block content %}
 
-    <form action="/" method="get">
+    <header class="spacer-div">
         <h1>Welcome to Odyssey</h1>
-    </form>
+        <p class="tagline-text">Your partner for planning and organizing every detail of your next trip</p>
+    </header>   
+    <h2 class="thinner-text">What Does Odyssey Offer?</h2>
+    <div class="carousel-container">
+        <div class="carousel spacer-div">
+            <div class="carousel-item">
+                <img src="/static/images/itinerary.jpg" alt="Itinerary Picture">
+                <p class="text-overlay"><strong class="yellow-text">Trip Itinerary</strong><br>With Odyssey’s itinerary feature, you can organise every detail of your trip in one place. Add flights, accommodations, activities, and more with just a few clicks.</p>
+            </div>
+            <div class="carousel-item">
+                <img src="/static/images/budgeting.jpg" alt="Budgeting Picture">
+                <p class="text-overlay"><strong class="yellow-text">Budgeting</strong><br>Planning a trip doesn’t have to break the bank. Whether you’re planning a luxury getaway or a budget-friendly adventure, Odyssey helps you stay on budget.</p>
+            </div>
+            <div class="carousel-item">
+                <img src="/static/images/packing.jpg" alt="Packing Picture">
+                <p class="text-overlay"><strong class="yellow-text">Packing List</strong><br>Odyssey's trip planner comes with a packing list to ensure you never forget a thing—customise and organise items for every one of your trips with ease.</p>
+            </div>
+            <div class="carousel-item">
+                <img src="/static/images/weather.jpg" alt="Weather Picture">
+                <p class="text-overlay"><strong class="yellow-text">7 Day Forecast</strong><br>Stay prepared with Odyssey's 7-day weather forecast feature. Get up-to-date weather insights for your destinations, helping you pack and plan activities with confidence.</p>
+            </div>
+            <div class="carousel-item">
+                <img src="/static/images/map.jpg" alt="Map Picture">
+                <p class="text-overlay"><strong class="yellow-text">Maps</strong><br>Odyssey's interactive maps make navigating your destinations easy. Explore key landmarks, find the best routes, and plan your activities with a few simple clicks.</p>
+            </div>
+        </div> 
+        <div class="strip-glass-div center-align">
+            <h2 class="thinner-text">Ready to Start Your Odyssey?</h2>
+            <p class="tagline-text">Register today and take the first step towards planning your ultimate trip!</p>
+            {% if session["user_id"] %}
+                <a href="/home">
+                    <button class="grey-btn">Go To Your Homepage</button>
+                </a>
+            {% else %}
+            <form action="/" method="post">
+                <a href="/register">
+                    <button class="grey-btn">Get Started</button>
+                </a>
+            </form>
+            {% endif %}
+        </div>
+    </div>
 
 {% endblock %}

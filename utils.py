@@ -61,7 +61,6 @@ def info_scraper(loc):
             "This is an accepted version of this page", 
             "Cork or CORK may refer to:",
             "d)",
-            "New York most commonly refers to: New York may also refer to:",
             "ˈheɾɑ] ⓘ) ",
             "ʒɐˈneɾu] ⓘ)",
             "Z-goh, GLASS- ; Scottish Gaelic: Glaschu ) "

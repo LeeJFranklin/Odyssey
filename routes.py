@@ -8,11 +8,10 @@ from utils import get_db, info_scraper, login_required
 
 def init_routes(app):
     # Landing page route
-    @app.route("/")
+    @app.route("/", methods=["GET", "POST"])
     def index():
-
-        #TODO implement a proper home page
-
+        if request.method == "POST":
+            return redirect(url_for("register"))
         return render_template("index.html")
 
     # Registering route
@@ -23,7 +22,9 @@ def init_routes(app):
 
         if request.method == "POST":
             db = get_db()
+            db.row_factory = sqlite3.Row  # Enable dictionary-like row access
             cursor = db.cursor()
+
                 
             # Check if username or email already exists
             cursor.execute("SELECT * FROM users WHERE username = ? OR email = ?;", (request.form.get("username"), request.form.get("email")))
@@ -37,13 +38,14 @@ def init_routes(app):
                 "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?);", 
                 (request.form.get("username"), request.form.get("email"), generate_password_hash(request.form.get("password")))
             )
-
-            # Commit the insert
             db.commit()
+            user = cursor.lastrowid
 
-            flash("Registration successful, please log in!", "success")
-            # Redirect to a login page or home after registration
-            return redirect(url_for("login"))
+            # Log in the user by storing their id in the session
+            session["user_id"] = user["id"]
+
+            # Redirect to home after registration
+            return redirect(url_for("home"))
 
         return render_template("register.html")
 
@@ -79,9 +81,6 @@ def init_routes(app):
 
             # Log in the user by storing their id in the session
             session["user_id"] = user["id"]
-
-            # Close the connection once finished
-            db.close()
 
             # Redirect to home after successful login
             return redirect(url_for("home"))

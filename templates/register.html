@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Resgister
+    Register
 {% endblock %}
 
 {% block content %}
@@ -12,11 +12,12 @@
             <p id="reg-user-error" class="error"></p>
             <input id="register-username" name="username" class="input-field" autofocus autocomplete="off" placeholder="Username" type="text">
             <p id="reg-email-error" class="error"></p>
-            <input id="register-email" name="email" class="input-field" autocomplete="off" placeholder="example@email.com" type="email">
+            <input id="register-email" name="email" class="input-field" autocomplete="off" placeholder="example@email.com" type="text">
             <p id="reg-password-error" class="error"></p>
             <input id="register-password" name="password" class="input-field" autocomplete="off" placeholder="Password" type="password">
             <p id="confirm-reg-password-error" class="error"></p>
             <input id="confirm-register-password" name="confirm-password" class="input-field" autocomplete="off" placeholder="Confirm Password" type="password">
+            <div id="reg-error-box" class=""></div>
             <button class="orange-btn" type="submit">Register</button>
         </div>
     </form>
