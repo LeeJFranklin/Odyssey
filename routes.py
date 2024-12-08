@@ -25,6 +25,9 @@ def init_routes(app):
             db.row_factory = sqlite3.Row  # Enable dictionary-like row access
             cursor = db.cursor()
 
+            username = request.form.get("username")
+            email = request.form.get("email")
+            password = request.form.get("password")
                 
             # Check if username or email already exists
             cursor.execute("SELECT * FROM users WHERE username = ? OR email = ?;", (request.form.get("username"), request.form.get("email")))
@@ -36,10 +39,15 @@ def init_routes(app):
             # Insert the new user into the database
             cursor.execute(
                 "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?);", 
-                (request.form.get("username"), request.form.get("email"), generate_password_hash(request.form.get("password")))
+                (username,email ,generate_password_hash(password))
             )
             db.commit()
-            user = cursor.lastrowid
+
+            cursor.execute(
+                "SELECT id FROM users WHERE username = ? ORDER BY id DESC LIMIT 1;",
+                (username,)
+            )
+            user = cursor.fetchone()
 
             # Log in the user by storing their id in the session
             session["user_id"] = user["id"]
