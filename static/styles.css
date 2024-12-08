@@ -12,11 +12,11 @@ body {
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
                 url("images/landing-background.jpg") center/cover no-repeat;
     background-attachment: fixed;
-    font-family: 'Inter', Arial, sans-serif;
+    font-family: 'Noto Sans', Arial, sans-serif;
     line-height: 1.7;
     color: #F5F5F5;
     height: 100vh;
-    overflow-x: hidden;
+    overflow-x: scroll;
 }
 
 /* Containers and Layouts */
@@ -34,30 +34,24 @@ header {
 }
 
 footer {
-    margin-top: 20px;
+    margin-top: 10px;
     text-align: center;
-    position: relative;
-    bottom: 0;
 }
 
 footer p {
     font-size: 0.8rem !important;
 }
 
-.top-div {
+.top-div, .bottom-div {
     width: 65vw;
     display: block;
-}
-
-.bottom-div {
-    width: 75vw;
-    display: block;
     place-items: center;
+    position: relative;
 }
 
-.header {
+.header, .planner-input-div {
     display: flex;
-    min-width: 400px;
+    margin: 0 auto;
     justify-content: space-between;
     width: 65vw;
     place-items: center;
@@ -69,12 +63,6 @@ footer p {
     width: 300px;
     justify-content: space-between;
     align-items: center;
-}
-
-.planner-input-div {
-    display: flex;
-    justify-content: center;
-    width: 100%;
 }
 
 .btn-row-div {
@@ -92,9 +80,8 @@ footer p {
 }
 
 .itinerary-table-div {
-    width: 67vw;
-    min-width: 810px;
-    margin-top: 5px;
+    width: 65vw;
+    min-width: 430px;
     margin-bottom: 30px;
     padding: 20px;
     background: rgba(255, 255, 255, 0.1);
@@ -116,7 +103,9 @@ footer p {
     width: 100%;
 }
 
-.trip-details-table {
+.trip-details-table,
+.packing-table, 
+.itinerary-table {
     width: 100%;
     border-collapse: collapse;
 }
@@ -132,18 +121,8 @@ footer p {
     padding: 2px;
 }
 
-.itinerary-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
 .itinerary-table thead {
     border-bottom: #b7b6b6 solid 1px;
-}
-
-.packing-table {
-    width: 100%;
-    border-collapse: collapse;
 }
 
 .packing-table thead {
@@ -173,10 +152,15 @@ footer p {
 }
 
 .inline-form {
-    display: flex;
-    width: 60vw;
+    display: block;
+    margin: auto;
+    text-align: center;
     place-items: center;
-    gap: 10px;
+    width: 40vw;
+}
+
+.inline-form input {
+    width: 100%; /* Ensures inputs span the grid column width */
 }
 
 .inline-span {
@@ -186,18 +170,15 @@ footer p {
 }
 
 #city-input, #country-input, #plan_new_trip {
-    margin: 10px;
+    margin: 5px;
 }
 
 .glass-div {
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.1);
     border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
 }
 
-.strip-glass-div {
+.strip-glass-div,
+.glass-div {
     padding: 20px;
     background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -209,7 +190,7 @@ footer p {
     display: flex;
     flex-direction: column;
     width: 48%;
-    min-width: 381px;
+    min-width: 380px;
     padding: 20px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 15px;
@@ -221,7 +202,7 @@ footer p {
     display: flex;
     flex-direction: column;
     width: 48%;
-    min-width: 381px;
+    min-width: 380px;
     height: 235px;
 }
 
@@ -243,11 +224,6 @@ footer p {
 
 #delete-account-form {
     margin-top: 20px;
-    width: 20vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
 }
 
 .map-sizing-div {
@@ -453,9 +429,8 @@ a:hover {
     align-items: center;
     padding: 0 20px;
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.0));
-    color: white;
-    height: 70px;
-    width: 100%;
+    height: 5vh;
+    width: 100vw;
     position: relative;
     top: 0;
     left: 0;
@@ -486,7 +461,8 @@ a:hover {
 .table-input-field-time,
 .table-input-field-info {
     padding: 12px;
-    margin-bottom: 10px;
+    height: 5vh;
+    margin-bottom: 1vh;
     border: none;
     border-radius: 10px;
     font-size: 1rem;
@@ -505,21 +481,19 @@ a:hover {
 }
 
 .table-input-field-small {
-    width: 5em;
+    width: 10vw;
 }
 
 .table-input-field-date {
-    width: 9.25em;
-    height: 42px;
+    width: 11vw;
 }
 
 .table-input-field-time {
-    width: 6.5em;
-    height: 42px;
+    width: 10vw;
 }
 
 .table-input-field-info {
-    width: 23em;
+    width: 25vw;
 }
 
 .list-style-none {
@@ -527,8 +501,7 @@ a:hover {
 }
 
 #city-input, #country-input {
-    width: 70em;
-    max-height: min-content;
+    width: 100%;
 }
 
 /* Cards */
@@ -542,10 +515,9 @@ a:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 100vw;
     max-width: 400px;
     backdrop-filter: blur(10px);
-    color: white;
 }
 
 .tight-form-window {
@@ -555,12 +527,10 @@ a:hover {
     padding: 10px 10px 40px 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    place-items: center;
     width: 100%;
     max-width: 400px;
     backdrop-filter: blur(10px);
-    color: white;
 }
 
 /* Map */
@@ -656,7 +626,7 @@ a:hover {
     }
 
     h2 {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
 
     h3 {

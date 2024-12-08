@@ -143,7 +143,7 @@ document.getElementById("change-password-form")?.addEventListener("submit", func
     } else if (newPassword.value != confirmNewPassword.value) {
         changePasswordError.innerHTML = "Passwords do not match";
         validationError = true;
-    }
+    };
 
     // Prevent form submission if there were any validation errors
     if (validationError) {
@@ -171,7 +171,7 @@ document.getElementById("delete-account-form")?.addEventListener("submit", funct
     } else if (accountPassword != confirmAccountPassword) {
         deleteErrorMsg.innerHTML = "Please confirm your password";
         validationError = true;
-    }
+    };
 
     if (validationError) {
         shakeError(deleteAccountForm);
@@ -405,11 +405,9 @@ function changePassword() {
         <div id="change-password-window" class="tight-form-window">
             <button type="button" class="icon-submit-btn move-right" onclick="closeChangePassword()"><span class="material-symbols-outlined">close</span></button>
             <h3>Change Password</h3>
-            <p id="current-password-error" class="error"></p>
+            <p id="change-password-error"></p>
             <input id="current-password" name="current-password" class="input-field" autofocus autocomplete="off" placeholder="Current Password" type="password">
-            <p id="new-password-error" class="error"></p>
             <input id="new-password" name="new-password" class="input-field" autocomplete="off" placeholder="New Password" type="password">
-            <p id="confirm-new-password-error" class="error"></p>
             <input id="confirm-new-password" name="confirm-new-password" class="input-field" autocomplete="off" placeholder="Confirm New Password" type="password">
             <button id="change-password-btn" class="red-btn" type="submit">Change Password</button>
         </div>
@@ -431,7 +429,7 @@ function deleteAccount() {
             <button type="button" class="icon-submit-btn move-right" onclick="closeDeleteAccount()"><span class="material-symbols-outlined">close</span></button>
             <h3>DELETE ACCOUNT</h3>
             <p id="delete-error"></p>
-            <input class="input-field" type="password" id="delete-account-password" name="delete-account-password" placeholder="Password">
+            <input class="input-field" type="password" id="delete-account-password" name="delete-account-password" placeholder="Password" autofocus>
             <input class="input-field" type="password" id="delete-account-confirm-password" name="delete-account-confirm-password" placeholder="Confirm Password">
             <button type="submit" class="red-btn" id="delete-account-btn" name="delete-account-btn">DELETE ACCOUNT</button>
         </div>

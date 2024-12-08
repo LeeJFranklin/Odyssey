@@ -398,7 +398,7 @@ def init_routes(app):
                     "UPDATE users SET password_hash = ? WHERE id = ?;", (generate_password_hash(new_password), session["user_id"])
                 )
                 db.commit()
-                
+                flash("Password changed", "success")
                 return redirect(url_for("settings"))
 
         return render_template("settings.html")
